@@ -2,11 +2,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     // ---------- BASE detection ----------
     const phpBase = (window.App && window.App.BASE_URL) || '/';
-    const BASE = (() => {
-        if (phpBase && phpBase !== '/') return phpBase;
-        const parts = location.pathname.split('/').filter(Boolean);
-        return parts.length ? `/${parts[0]}/` : '/';
-    })();
+  // ---------- BASE detection ----------
+const BASE = (() => {
+    // Unahin palagi ang BASE_URL na galing sa PHP (ito ang pinakatama).
+    if (window.App && typeof window.App.BASE_URL === 'string') {
+        return window.App.BASE_URL;
+    }
+    // Fallback para lang kung sakaling hindi na-set ng PHP (para safe).
+    console.warn('PHP App.BASE_URL not detected. Guessing from URL path.');
+    const pathParts = location.pathname.split('/').filter(Boolean);
+    return pathParts.length > 1 ? `/${pathParts[0]}/` : '/';
+})();
     const CB = () => 'cb=' + Date.now();
 
     const API = {
