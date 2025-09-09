@@ -1,28 +1,26 @@
 // assets/js/appointments.js
 document.addEventListener('DOMContentLoaded', () => {
     // ---------- BASE detection ----------
-    const phpBase = (window.App && window.App.BASE_URL) || '/';
-  // ---------- BASE detection ----------
-const BASE = (() => {
-    // Unahin palagi ang BASE_URL na galing sa PHP (ito ang pinakatama).
-    if (window.App && typeof window.App.BASE_URL === 'string') {
-        return window.App.BASE_URL;
-    }
-    // Fallback para lang kung sakaling hindi na-set ng PHP (para safe).
-    console.warn('PHP App.BASE_URL not detected. Guessing from URL path.');
-    const pathParts = location.pathname.split('/').filter(Boolean);
-    return pathParts.length > 1 ? `/${pathParts[0]}/` : '/';
-})();
+    const BASE = (() => {
+        if (window.App && typeof window.App.BASE_URL === 'string') {
+            return window.App.BASE_URL;
+        }
+        console.warn('PHP App.BASE_URL not detected. Guessing from URL path.');
+        const pathParts = location.pathname.split('/').filter(Boolean);
+        return pathParts.length > 1 ? `/${pathParts[0]}/` : '/';
+    })();
     const CB = () => 'cb=' + Date.now();
 
+    // ===== START OF FIX: Tinawag na natin ang .php files nang direkta =====
     const API = {
-        pets: `${BASE}api/pets/list?${CB()}`,
-        createAppointment: `${BASE}api/appointments/create`,
-        updateAppointment: `${BASE}api/appointments/update`,
-        deleteAppointment: `${BASE}api/appointments/delete`,
-        listAppointments:  `${BASE}api/appointments/list_mine`,
-        slots:             `${BASE}api/appointments/slots`,
+        pets:              `${BASE}api/pets/list.php?${CB()}`,
+        createAppointment: `${BASE}api/appointments/create.php`,
+        updateAppointment: `${BASE}api/appointments/update.php`,
+        deleteAppointment: `${BASE}api/appointments/delete.php`,
+        listAppointments:  `${BASE}api/appointments/list_mine.php`,
+        slots:             `${BASE}api/appointments/slots.php`,
     };
+    // ===== END OF FIX =====
 
     // ---------- Elements ----------
     const modal       = document.getElementById('bookingModal');
@@ -36,7 +34,6 @@ const BASE = (() => {
     const historyEl   = document.getElementById('historyList');
     const historyToggle = document.getElementById('historyToggle');
 
-    // Pet picker
     const hiddenPetId = document.getElementById('pet_id');
     const petPicker   = document.getElementById('petPicker');
     const petTrigger  = document.getElementById('petTrigger');
@@ -55,7 +52,6 @@ const BASE = (() => {
     let editingId = null;
     function resetAndHide(){ editingId=null; form?.reset?.(); toggleOtherField(); hideModal(); }
 
-    // ----- "Other" service support -----
     const OTHER_ID = 'service_other';
     function ensureOtherInput() {
         let txt = document.getElementById(OTHER_ID);
@@ -87,6 +83,7 @@ const BASE = (() => {
                 timeSelect.innerHTML = '<option value="">-- Select a date first --</option>';
                 return;
             }
+            // Note: API.slots is already a full URL with cache buster
             const u = new URL(API.slots, location.origin);
             u.searchParams.set('date', dateStr);
             if (hiddenPetId?.value) u.searchParams.set('pet_id', hiddenPetId.value);
@@ -94,7 +91,7 @@ const BASE = (() => {
             if (excludeId)          u.searchParams.set('exclude_id', excludeId);
 
             const prev = timeSelect.value;
-            const res  = await fetch(`${u.toString()}&${CB()}`, { credentials:'same-origin' });
+            const res  = await fetch(u.toString(), { credentials:'same-origin' });
             const data = await res.json().catch(() => ({}));
 
             timeSelect.innerHTML = '<option value="">-- Select a time --</option>';
@@ -303,12 +300,9 @@ const BASE = (() => {
         element: calendarEl,
         config: {
             dayCellDidMount: enhanceDayCells,
-            
-            // --- NEW: This adds the tooltip on hover ---
             eventDidMount: function(info) {
                 info.el.setAttribute('title', info.event.title);
             },
-
             dateClick: (info) => {
                 const today = new Date(); today.setHours(0,0,0,0);
                 if (new Date(info.dateStr) < today) return;
@@ -317,10 +311,11 @@ const BASE = (() => {
             },
             events: async (fetchInfo, success, failure) => {
                 try {
+                    // Note: API.listAppointments is already a full URL with cache buster
                     const u = new URL(API.listAppointments, location.origin);
                     u.searchParams.set('start', fetchInfo.startStr);
                     u.searchParams.set('end', fetchInfo.endStr);
-                    const res = await fetch(`${u.toString()}&${CB()}`, { credentials: 'same-origin' });
+                    const res = await fetch(u.toString(), { credentials: 'same-origin' });
                     if (!res.ok) throw new Error('Failed to load appointments.');
                     const events = await res.json();
                     success(events);
