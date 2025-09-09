@@ -7,23 +7,10 @@ require_once __DIR__ . '/../app/models/Profile.php';
 
 /** Robust base path detector (works with mod_rewrite + subfolders) */
 function base_path(): string {
-    // 1) Try SCRIPT_NAME (ok kapag hindi nabasag ng rewrite)
-    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
-    $base = rtrim(dirname($scriptName), '/\\');
-
-    // 2) Kapag "/" o empty (common sa rewrites), derive from REQUEST_URI
-    if ($base === '' || $base === '/') {
-        $uriPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-        $parts = array_values(array_filter(explode('/', $uriPath)));
-        // Assume first segment is the app folder, UNLESS it's a known route prefix
-        if (!empty($parts) && !in_array($parts[0], ['dashboard','auth','api','views','assets'])) {
-            $base = '/' . $parts[0];
-        } else {
-            $base = '';
-        }
-    }
-
-    return ($base === '' ? '/' : $base . '/');
+    $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+    // If project is in root, dirname is '/', return as is.
+    // If in subfolder, (e.g., /myapp), return '/myapp/'.
+    return ($base === '/' || $base === '\\') ? '/' : $base . '/';
 }
 
 function request_path(): string {
