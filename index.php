@@ -1,4 +1,14 @@
 <?php
+$requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+if ($requestPath === '/api/pets/list') {
+    require_once __DIR__ . '/api/pets/list.php';
+    exit();
+}
+if ($requestPath === '/api/appointments/list_mine') {
+    require_once __DIR__ . '/api/appointments/list_mine.php';
+    exit();
+}
 // index.php (router)
 require_once __DIR__ . '/vendor/autoload.php';
 
