@@ -11,14 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
     const CB = () => 'cb=' + Date.now();
 
-    // ===== START OF FIX: Tinawag na natin ang .php files nang direkta =====
+    // ===== START OF FIX: Ibinalik sa "pretty" URL (walang .php) =====
     const API = {
-        pets:              `${BASE}api/pets/list.php?${CB()}`,
-        createAppointment: `${BASE}api/appointments/create.php`,
-        updateAppointment: `${BASE}api/appointments/update.php`,
-        deleteAppointment: `${BASE}api/appointments/delete.php`,
-        listAppointments:  `${BASE}api/appointments/list_mine.php`,
-        slots:             `${BASE}api/appointments/slots.php`,
+        pets:              `${BASE}api/pets/list?${CB()}`,
+        createAppointment: `${BASE}api/appointments/create`,
+        updateAppointment: `${BASE}api/appointments/update`,
+        deleteAppointment: `${BASE}api/appointments/delete`,
+        listAppointments:  `${BASE}api/appointments/list_mine`,
+        slots:             `${BASE}api/appointments/slots`,
     };
     // ===== END OF FIX =====
 
@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 timeSelect.innerHTML = '<option value="">-- Select a date first --</option>';
                 return;
             }
-            // Note: API.slots is already a full URL with cache buster
             const u = new URL(API.slots, location.origin);
             u.searchParams.set('date', dateStr);
             if (hiddenPetId?.value) u.searchParams.set('pet_id', hiddenPetId.value);
@@ -311,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             events: async (fetchInfo, success, failure) => {
                 try {
-                    // Note: API.listAppointments is already a full URL with cache buster
                     const u = new URL(API.listAppointments, location.origin);
                     u.searchParams.set('start', fetchInfo.startStr);
                     u.searchParams.set('end', fetchInfo.endStr);

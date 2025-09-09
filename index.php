@@ -1,14 +1,4 @@
 <?php
-$requestPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-if ($requestPath === '/api/pets/list') {
-    require_once __DIR__ . '/api/pets/list.php';
-    exit();
-}
-if ($requestPath === '/api/appointments/list_mine') {
-    require_once __DIR__ . '/api/appointments/list_mine.php';
-    exit();
-}
 // index.php (router)
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -133,7 +123,7 @@ $routes = [
     'api/pet-owners/toggle_active'       => __DIR__ . '/api/pet-owners/toggle_active.php',
     'api/pet-owners/reset_password'      => __DIR__ . '/api/pet-owners/reset_password.php',
     
-    // Pets API (for User Dashboard) - INAYOS AT IDINAGDAG ANG MGA NAWAWALA
+    // Pets API (for User Dashboard)
     'api/pets/list'                      => __DIR__ . '/api/pets/list.php',
 
     // Appointments (user)
