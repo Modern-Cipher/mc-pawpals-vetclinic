@@ -1,22 +1,4 @@
 <?php
-// ===== START DEBUGGING CODE (Temporary) =====
-$reqPath   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-$path      = trim(str_starts_with($reqPath, $scriptDir) ? substr($reqPath, strlen($scriptDir)) : $reqPath, '/');
-$path      = rtrim($path, '/');
-
-echo "<pre style='font-family: monospace; background: #f4f4f4; padding: 15px; border: 1px solid #ccc;'>";
-echo "<b>Calculated Path for Router:</b>\n" . htmlspecialchars($path) . "\n\n";
-echo "--- SERVER VARIABLES ---\n";
-echo "<b>REQUEST_URI:</b> " . htmlspecialchars($_SERVER['REQUEST_URI']) . "\n";
-echo "<b>SCRIPT_NAME:</b> " . htmlspecialchars($_SERVER['SCRIPT_NAME']) . "\n";
-echo "</pre>";
-die();
-// ===== END DEBUGGING CODE =====
-
-// index.php (router)
-require_once __DIR__ . '/vendor/autoload.php';
-// ... (tuloy ng code mo) ...
 // index.php (router)
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -89,7 +71,7 @@ $routes = [
     'dashboard/users/pets'               => __DIR__ . '/views/dashboards/users/pets.php',
     'dashboard/users/appointments'       => __DIR__ . '/views/dashboards/users/appointments.php',
     'dashboard/users/records'            => __DIR__ . '/views/dashboards/users/records.php',
-    'dashboard/users/documents'          => __DIR__ . '/views/dashboards/users/pet-document.php', // ===== BAGONG ROUTE PARA SA PAGE =====
+    'dashboard/users/documents'          => __DIR__ . '/views/dashboards/users/pet-document.php',
     'dashboard/users/notifications'      => __DIR__ . '/views/dashboards/users/notifications.php',
     'dashboard/ratings'                  => __DIR__ . '/views/dashboards/ratings/index.php',
     'dashboard/settings/general'         => __DIR__ . '/views/dashboards/settings/index.php',
@@ -129,17 +111,20 @@ $routes = [
     'api/staffs/time_off_requests'       => __DIR__ . '/api/staffs/time_off_requests.php',
     'api/staffs/approve_time_off'        => __DIR__ . '/api/staffs/approve_time_off.php',
     'api/staffs/deny_time_off'           => __DIR__ . '/api/staffs/deny_time_off.php',
-    
+
     // Pet Document Management
     'api/pet-documents/upload_document'   => __DIR__ . '/api/pet-documents/upload_document.php',
     'api/pet-documents/list_by_pet_staff' => __DIR__ . '/api/pet-documents/list_by_pet_staff.php',
     'api/pet-documents/delete_by_staff'   => __DIR__ . '/api/pet-documents/delete_by_staff.php',
-    'api/pet-documents/download'          => __DIR__ . '/api/pet-documents/download.php', // ===== BAGONG ROUTE PARA SA DOWNLOAD =====
+    'api/pet-documents/download'          => __DIR__ . '/api/pet-documents/download.php',
 
     // Pet Owners (admin management)
     'api/pet-owners/list'                => __DIR__ . '/api/pet-owners/list.php',
     'api/pet-owners/toggle_active'       => __DIR__ . '/api/pet-owners/toggle_active.php',
     'api/pet-owners/reset_password'      => __DIR__ . '/api/pet-owners/reset_password.php',
+    
+    // Pets API (for User Dashboard) - INAYOS AT IDINAGDAG ANG MGA NAWAWALA
+    'api/pets/list'                      => __DIR__ . '/api/pets/list.php',
 
     // Appointments (user)
     'api/appointments/create'            => __DIR__ . '/api/appointments/create.php',
@@ -147,11 +132,10 @@ $routes = [
     'api/appointments/update'            => __DIR__ . '/api/appointments/update.php',
     'api/appointments/delete'            => __DIR__ . '/api/appointments/delete.php',
     'api/appointments/slots'             => __DIR__ . '/api/appointments/slots.php',
-    
+
     // User APIs
-    'api/pets/list'                      => __DIR__ . '/api/pets/list.php',
     'api/users/medical-summary'          => __DIR__ . '/api/users/medical-summary.php',
-    'api/users/pet-documents'            => __DIR__ . '/api/users/pet_documents.php', // ===== BAGONG ROUTE PARA SA API =====
+    'api/users/pet-documents'            => __DIR__ . '/api/users/pet_documents.php',
 
     // Staff Medical APIs
     'api/staffs/pets/search'             => __DIR__ . '/api/staffs/pets/search.php',
