@@ -1,0 +1,135 @@
+/* --- (FIX) PARA HINDI MATAKPAN NG FOOTER ANG CONTENT --- */
+/* Nagdagdag ito ng space sa ilalim para hindi matabunan ng footer yung dulo ng page. */
+.content {
+    padding-bottom: 80px; /* Taas ng footer + extra space */
+}
+
+/* --- Profile Page Specific Styles --- */
+.profile-layout {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+.profile-summary-card .panel-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+.profile-avatar-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary);
+    margin-bottom: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+.profile-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.profile-designation {
+    color: var(--ink-2);
+    margin-bottom: 16px;
+}
+.profile-divider {
+    width: 50%;
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin-bottom: 16px;
+}
+.profile-contact-info {
+    text-align: left;
+    width: 100%;
+    font-size: 0.9rem;
+    color: var(--ink-2);
+    margin-bottom: 24px;
+    word-break: break-word;
+}
+.profile-contact-info p {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+.profile-contact-info i.fa-solid {
+    color: var(--primary);
+    margin-top: 4px;
+    width: 16px;
+    text-align: center;
+}
+.form-divider {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+}
+.cooldown-message {
+    font-size: 0.8rem;
+    color: var(--ink-2);
+    margin-top: 4px;
+    display: block;
+}
+
+/* --- Custom File Upload Styles --- */
+.file-upload-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px;
+    background: white;
+}
+.file-upload-input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+.file-upload-button {
+    background: var(--primary);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.file-upload-input:hover ~ .file-upload-button, .file-upload-button:hover {
+    background-color: var(--primary-dark);
+}
+.file-upload-button i {
+    margin-right: 8px;
+}
+.file-upload-filename {
+    padding-left: 12px;
+    color: var(--ink-2);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- STYLE PARA SA BUTTONS --- */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+/* Responsive adjustment */
+@media (max-width: 992px) {
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+}

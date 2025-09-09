@@ -1,0 +1,98 @@
+:root {
+  --theme-color: #0fb9a8; --theme-color-darker: #0b9a8c; --text-primary: #1e293b;
+  --text-secondary: #64748b; --bg-light: #f8fafc; --bg-white: #ffffff; --border-color: #e2e8f0;
+}
+.page-wrapper { display: flex; flex-direction: column; flex-grow: 1; min-height: 100vh; }
+.content { flex-grow: 1; display: flex; flex-direction: column; padding: 1.5rem; }
+.page-head { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.page-head h1 { margin: 0; }
+.page-tools { display: flex; gap: 0.75rem; align-items: center; flex-grow: 1; max-width: 600px; }
+.searchbox { position: relative; display: flex; align-items: center; flex-grow: 1; }
+.searchbox input { width: 100%; height: 44px; padding: 0 1rem 0 2.75rem; box-sizing: border-box; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-white); transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.searchbox input:focus { border-color: var(--theme-color); box-shadow: 0 0 0 4px rgba(15, 185, 168, 0.2); outline: none; }
+.searchbox i { position: absolute; left: 1rem; color: var(--text-secondary); }
+.btn-add-pet { display: flex; align-items: center; justify-content: center; height: 44px; box-sizing: border-box; padding: 0 1.25rem; background-color: var(--theme-color); color: white !important; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; white-space: nowrap; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.btn-add-pet:hover { background-color: var(--theme-color-darker); }
+.btn-add-pet .btn-label { margin-left: 0.5rem; }
+.species-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
+.chip { padding: 0.5rem 1rem; border-radius: 20px; background: var(--bg-light); color: var(--text-secondary); font-weight: 600; cursor: pointer; border: 1px solid var(--border-color); transition: all 0.2s; }
+.chip:hover { background-color: #f1f5f9; }
+.chip.active { background: var(--theme-color); color: white; border-color: var(--theme-color); }
+.pets-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+.pet-card { background-color: #fff; border-radius: 12px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05); border: 1px solid var(--border-color); display: flex; flex-direction: column; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+.pet-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1); z-index: 10; position: relative; }
+.pet-photo, .pet-photo-placeholder { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid var(--border-color); }
+.pet-photo-placeholder { display: flex; align-items: center; justify-content: center; background-color: var(--bg-light); color: #cbd5e1; font-size: 4rem; }
+.pet-body { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
+.pet-name { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.pet-meta { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem; }
+.pet-actions { display: flex; gap: 0.5rem; margin-top: auto; padding-top: 0.75rem; }
+.iconbtn { width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border-color); background: #fff; display: grid; place-items: center; cursor: pointer; color: var(--text-secondary); transition: all 0.2s; }
+.iconbtn:hover { border-color: var(--theme-color); background-color: #f0fdfa; color: var(--theme-color); }
+.iconbtn[disabled] { cursor: not-allowed; opacity: 0.6; background-color: #f1f5f9; }
+.modal-content { display: flex; flex-direction: column; height: 90vh; max-height: 750px; }
+.modal-header { flex-shrink: 0; }
+.modal-body { flex-grow: 1; overflow-y: auto; scrollbar-width: none; }
+.modal-body::-webkit-scrollbar { display: none; }
+.modal-footer { flex-shrink: 0; border-top: 1px solid var(--border-color); }
+.pet-header { display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; }
+.pet-header .pet-photo, .pet-header .pet-photo-placeholder { width: 72px; height: 72px; border-radius: 50%; flex-shrink: 0; object-fit: cover; }
+.pet-header-info h3 { margin: 0; font-size: 1.5rem; }
+.tabs { display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border-color); margin-bottom: 1rem; }
+.tabbtn { padding: 0.75rem 0.25rem; margin-bottom: -1px; border: none; border-bottom: 2px solid transparent; background: none; cursor: pointer; color: var(--text-secondary); font-weight: 600; transition: color 0.2s, border-color 0.2s; }
+.tabbtn:hover { color: var(--text-primary); }
+.tabbtn.active { color: var(--theme-color); border-bottom-color: var(--theme-color); }
+.details-row { display: grid; grid-template-columns: 140px 1fr; gap: 1rem; padding: 0.85rem 0; border-bottom: 1px solid var(--border-color); align-items: center; }
+.details-row:last-child { border-bottom: none; }
+.details-row .label { font-weight: 600; color: var(--text-secondary); }
+.custom-checkbox { display: flex; align-items: center; cursor: pointer; user-select: none; padding: 0.5rem 0;}
+.custom-checkbox input[type="checkbox"] { opacity: 0; width: 0; height: 0; }
+.custom-checkbox .checkbox-visual { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border-color); border-radius: 4px; margin-right: 10px; transition: all 0.2s; position: relative; background-color: var(--bg-white); }
+.custom-checkbox input[type="checkbox"]:checked + .checkbox-visual { background-color: var(--theme-color); border-color: var(--theme-color); }
+.custom-checkbox input[type="checkbox"]:checked + .checkbox-visual::after { content: '✔'; color: white; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 12px; }
+.custom-file-input { position: relative; }
+.custom-file-input input[type="file"] { position: absolute; left: 0; top: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
+.file-input-label { display: inline-flex; align-items: center; padding: 0.5rem 1rem; border: 1px solid var(--border-color); border-radius: 6px; background-color: var(--bg-light); cursor: pointer; transition: background-color 0.2s; }
+.file-input-label:hover { background-color: #f1f5f9; }
+.file-input-label i { margin-right: 8px; }
+.file-input-name { margin-left: 10px; color: var(--text-secondary); font-size: 0.9rem; }
+[data-tooltip] { position: relative; }
+[data-tooltip]::after { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-10px); background-color: #334155; color: white; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 500; white-space: nowrap; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s; z-index: 1000; pointer-events: none; }
+[data-tooltip]:hover::after { opacity: 1; visibility: visible; }
+@media (max-width: 768px) {
+  .content { padding: 1rem; }
+  .page-head { flex-direction: column; align-items: stretch; }
+  .page-tools { flex-wrap: nowrap; max-width: 100%; }
+  .btn-add-pet .btn-label { display: none; }
+  .btn-add-pet { width: 44px; height: 44px; padding: 0; flex-shrink: 0; }
+  .modal .modal-content { width: calc(100% - 2rem); margin: 1rem auto; }
+  .modal.modal-left .modal-content { margin: 1rem; width: calc(100% - 2rem); }
+}
+
+/* Styles for the frameless image zoom */
+.swal2-popup.frameless-zoom {
+    background: transparent !important;
+    padding: 0 !important;
+}
+.swal2-popup.frameless-zoom .zoomed-image {
+    max-width: 90vw;
+    max-height: 85vh;
+    border-radius: 8px;
+}
+/* FIX: Close button position */
+.swal2-popup.frameless-zoom .zoom-close-button {
+    position: fixed !important; /* Use fixed positioning to place relative to viewport */
+    top: 1rem !important;
+    right: 1.5rem !important;
+    width: 2.5em !important;
+    height: 2.5em !important;
+    background-color: rgba(0,0,0,0.5) !important;
+    color: #ffffff !important;
+    border: 2px solid rgba(255,255,255,0.8) !important;
+    border-radius: 50% !important;
+    font-size: 1.2rem !important; /* Adjust icon size */
+}
+.swal2-popup.frameless-zoom .zoom-close-button:hover {
+    background-color: rgba(0,0,0,0.8) !important;
+    transform: scale(1.1);
+}

@@ -1,0 +1,281 @@
+/* ===================================================================
+   Base Layout & Panels - FINAL CARD DESIGN
+=================================================================== */
+:root {
+    --primary-color: #38bdf8;
+    --border-color: #e2e8f0;
+    --panel-bg: #ffffff;
+    --body-bg: #f8fafc;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.docs-management-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    font-family: var(--font-family);
+}
+
+.left-column {
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: calc(100vh - 120px);
+}
+
+.right-panel {
+    flex: 1;
+    display: none; /* Itago by default */
+    min-width: 0;
+}
+.right-panel.visible {
+    display: block; /* Ipakita kapag may 'visible' class */
+}
+
+/* ===================================================================
+   Search Bar (Nasa labas na ng card)
+=================================================================== */
+.main-search-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+#pet-search {
+    width: 100%;
+    padding: 12px 16px 12px 40px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    -webkit-appearance: none;
+    background-color: var(--panel-bg);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+#pet-search:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+.main-search-container::before {
+    content: '\f002';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    z-index: 1;
+}
+
+/* ===================================================================
+   Pet List Card (Scrollable)
+=================================================================== */
+.left-panel-card {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    flex-grow: 1;
+    padding: 20px;
+    overflow: hidden; /* Itago ang content na lalagpas */
+    display: flex;
+    flex-direction: column;
+}
+
+.pet-list-scroll-area {
+    overflow-y: auto;
+    height: 100%; /* Gamitin ang buong natitirang space */
+    padding-right: 10px;
+    margin-right: -10px;
+
+    &::-webkit-scrollbar { width: 6px; }
+    &::-webkit-scrollbar-track { background: transparent; }
+    &::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.pet-list-sidebar { list-style: none; padding: 0; margin: 0; }
+
+.pet-list-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.2s, transform 0.2s;
+    margin-bottom: 8px;
+}
+.pet-list-item:hover { background-color: #f1f5f9; transform: translateX(4px); }
+.pet-list-item.active { background-color: var(--primary-color); color: white; }
+.pet-list-item.active .pet-owner { color: #e0f2fe; }
+
+.pet-photo-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.pet-details { display: flex; flex-direction: column; min-width: 0; }
+.pet-name {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text-dark);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pet-list-item.active .pet-name { color: white; }
+.pet-owner { font-size: 0.9rem; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ===================================================================
+   Right Panel Card
+=================================================================== */
+.right-panel-card {
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.right-panel-content-wrapper { display: flex; flex-direction: column; }
+.pet-info-header { padding: 24px; display: flex; align-items: center; gap: 20px; border-bottom: 1px solid var(--border-color); }
+.pet-photo { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; }
+#pet-name { margin: 0; font-size: 2rem; font-weight: 700; color: var(--text-dark); }
+.docs-vault-container { padding: 24px; }
+.docs-vault { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
+#upload-form-section { padding: 24px; border-top: 1px solid var(--border-color); }
+.drop-zone { border: 2px dashed #cbd5e1; border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.2s; margin-bottom: 24px; }
+.drop-zone.drag-over { background-color: #f0f9ff; border-color: var(--primary-color); }
+.form-actions { margin-top: 24px; text-align: right; }
+
+/* ===================================================================
+   Document Card & Icon FIX
+=================================================================== */
+.document-card {
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s;
+}
+.document-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    border-color: var(--primary-color);
+}
+
+.doc-preview {
+    background-color: #f8fafc;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.doc-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover; /* Changed to cover for better image fill */
+}
+
+/* ===== ICON FIX: Mas malaki at malinis na file-type icons ===== */
+.doc-preview i {
+    font-size: 3.5rem; /* Pinalaki ang icon */
+    color: #94a3b8;
+}
+
+.doc-info {
+    padding: 12px;
+    text-align: center;
+    background-color: var(--panel-bg);
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+}
+.doc-title {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--text-dark);
+}
+.doc-type {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    text-transform: capitalize;
+}
+
+/* ===== ICON FIX: Inayos ang action buttons ===== */
+.doc-actions {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.2s;
+}
+.document-card:hover .doc-actions {
+    opacity: 1;
+    transform: translateY(0);
+}
+.action-btn {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 32px; /* Pinalaki ng konti */
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-light);
+    font-size: 0.9rem; /* Pinalaki ang icon sa loob */
+}
+.action-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* ===================================================================
+   Responsive Design
+=================================================================== */
+@media (max-width: 1024px) {
+    .docs-management-layout { flex-direction: column; }
+    .left-column { width: 100%; height: auto; max-height: 45vh; }
+    .right-panel.visible { width: 100%; }
+}
+
+@media (max-width: 480px) {
+    .docs-vault { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .doc-preview { height: 90px; }
+    .doc-preview i { font-size: 2.5rem; }
+    .doc-info { padding: 10px; font-size: 0.8rem; }
+    .doc-title { font-size: 0.8rem; }
+}
+
+/* Idagdag sa dulo ng assets/css/pet-documentation.css */
+.doc-uploader {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8; /* Mas light na kulay */
+    margin-top: 4px;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

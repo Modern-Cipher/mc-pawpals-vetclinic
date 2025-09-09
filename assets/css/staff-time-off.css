@@ -1,0 +1,121 @@
+/* General Table Styling for Desktop */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    display: table; /* Default for desktop */
+}
+
+.table th, .table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.table thead th {
+    background-color: #f8fafc;
+    color: #64748b;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+.table td.min-col {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-pending {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+.badge-approved {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.badge-denied {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.btn-success {
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Mobile-specific styles */
+.cards {
+    display: none; /* Hidden on desktop */
+    flex-direction: column;
+    gap: 15px;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 15px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.card-info {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.card .badge {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+
+/* Hide the table and show the cards on mobile */
+@media (max-width: 768px) {
+    .table {
+        display: none;
+    }
+    .cards {
+        display: flex;
+    }
+}

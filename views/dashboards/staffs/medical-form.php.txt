@@ -1,0 +1,169 @@
+<?php
+require_once __DIR__ . '/../../../middleware/auth.php';
+require_login(['staff']);
+$BASE = base_path();
+$V    = 'v=20250905m'; // bump to bust cache
+
+$appointment_id = isset($_GET['appointment_id']) ? (int)$_GET['appointment_id'] : 0;
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consultation Form</title>
+  <link rel="stylesheet" href="<?= $BASE ?>assets/css/base-dashboard.css?<?= $V ?>">
+  <link rel="stylesheet" href="<?= $BASE ?>assets/css/staff-medical.css?<?= $V ?>">
+  <link rel="stylesheet" href="<?= $BASE ?>assets/css/staff-medical-form.css?<?= $V ?>">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<?php require_once __DIR__ . '/../../partials/sidebar-staff.php'; ?>
+<div class="content-wrapper">
+  <?php require_once __DIR__ . '/../../partials/topbar.php'; ?>
+
+  <main class="content">
+    <div class="page-head">
+      <a href="<?= $BASE ?>dashboard/staffs/medical" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i><span class="hide-sm"> Back to Records</span>
+      </a>
+      <h1>Consultation Form</h1>
+      <div></div>
+    </div>
+
+    <!-- Patient -->
+    <div class="patient-info card" id="patientInfo">
+      <p class="muted">Loading patient information...</p>
+    </div>
+
+    <!-- Form -->
+    <form id="consultationForm" class="card">
+      <input type="hidden" name="appointment_id" value="<?= $appointment_id ?>">
+
+      <div class="tabs">
+        <button type="button" class="tab-link active" data-tab="tab-exam">Exam &amp; Vitals</button>
+      </div>
+
+      <div id="tab-exam" class="tab-content active">
+        <h3>Examination &amp; Findings (S.O.A.P.)</h3>
+
+        <!-- Vitals -->
+        <div class="form-grid vitals-grid">
+          <div class="form-group">
+            <label for="weight_kg">Weight (kg)</label>
+            <input type="number" step="0.01" id="weight_kg" name="weight_kg" placeholder="e.g., 12.35">
+          </div>
+          <div class="form-group">
+            <label for="temperature_c">Temperature (°C)</label>
+            <input type="number" step="0.1" id="temperature_c" name="temperature_c" placeholder="e.g., 38.6">
+          </div>
+          <div class="form-group">
+            <label for="pulse_bpm">Pulse (bpm)</label>
+            <input type="number" step="1" id="pulse_bpm" name="pulse_bpm" placeholder="e.g., 96">
+          </div>
+          <div class="form-group">
+            <label for="resp_rate">Respiration (rpm)</label>
+            <input type="number" step="1" id="resp_rate" name="resp_rate" placeholder="e.g., 22">
+          </div>
+        </div>
+
+        <!-- SOAP -->
+        <div class="form-group">
+          <label for="subjective">Subjective (Owner’s Report) <span class="req">*</span></label>
+          <textarea id="subjective" name="subjective" rows="3" placeholder="Symptoms and history reported by the pet owner..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="objective">Objective (Vet’s Observations) <span class="req">*</span></label>
+          <textarea id="objective" name="objective" rows="4" placeholder="Physical exam findings, vitals, and other objective data..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="assessment">Assessment (Diagnosis) <span class="req">*</span></label>
+          <textarea id="assessment" name="assessment" rows="3" placeholder="Diagnosis or differentials..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="plan">Plan (Treatments, Prescriptions) <span class="req">*</span></label>
+          <textarea id="plan" name="plan" rows="4" placeholder="Treatment plan, medications, follow-up instructions..."></textarea>
+        </div>
+
+        <!-- Services & Treatments (accordions) -->
+        <div class="seg">
+          <div class="seg-head" role="button" tabindex="0">
+            <h4><i class="fa-solid fa-syringe me"></i> Vaccinations</h4>
+            <div class="seg-actions">
+              <button type="button" class="btn btn-sm add-row" data-target="#tblVacc" title="Add item"><i class="fa-solid fa-plus"></i></button>
+              <i class="fa-solid fa-chevron-down caret"></i>
+            </div>
+          </div>
+          <div class="seg-body"><div id="tblVacc" class="rows"></div></div>
+        </div>
+
+        <div class="seg">
+          <div class="seg-head" role="button" tabindex="0">
+            <h4><i class="fa-solid fa-bug-slash me"></i> Deworming</h4>
+            <div class="seg-actions">
+              <button type="button" class="btn btn-sm add-row" data-target="#tblDeworm"><i class="fa-solid fa-plus"></i></button>
+              <i class="fa-solid fa-chevron-down caret"></i>
+            </div>
+          </div>
+          <div class="seg-body"><div id="tblDeworm" class="rows"></div></div>
+        </div>
+
+        <div class="seg">
+          <div class="seg-head" role="button" tabindex="0">
+            <h4><i class="fa-solid fa-shield-dog me"></i> Parasite Prevention</h4>
+            <div class="seg-actions">
+              <button type="button" class="btn btn-sm add-row" data-target="#tblPrev"><i class="fa-solid fa-plus"></i></button>
+              <i class="fa-solid fa-chevron-down caret"></i>
+            </div>
+          </div>
+          <div class="seg-body"><div id="tblPrev" class="rows"></div></div>
+        </div>
+
+        <div class="seg">
+          <div class="seg-head" role="button" tabindex="0">
+            <h4><i class="fa-solid fa-pills me"></i> Medications</h4>
+            <div class="seg-actions">
+              <button type="button" class="btn btn-sm add-row" data-target="#tblMeds"><i class="fa-solid fa-plus"></i></button>
+              <i class="fa-solid fa-chevron-down caret"></i>
+            </div>
+          </div>
+          <div class="seg-body"><div id="tblMeds" class="rows"></div></div>
+        </div>
+
+        <div class="seg">
+          <div class="seg-head" role="button" tabindex="0">
+            <h4><i class="fa-solid fa-triangle-exclamation me"></i> Allergies</h4>
+            <div class="seg-actions">
+              <button type="button" class="btn btn-sm add-row" data-target="#tblAllergy"><i class="fa-solid fa-plus"></i></button>
+              <i class="fa-solid fa-chevron-down caret"></i>
+            </div>
+          </div>
+          <div class="seg-body"><div id="tblAllergy" class="rows"></div></div>
+        </div>
+      </div>
+
+      <!-- Desktop actions -->
+      <div class="form-footer">
+        <button type="submit" class="btn btn-primary">
+          <i class="fa-solid fa-save"></i> Save &amp; Complete Appointment
+        </button>
+      </div>
+
+      <!-- Mobile sticky action -->
+      <div class="sticky-actions">
+        <button type="submit" class="btn btn-primary btn-wide">
+          <i class="fa-solid fa-save"></i> Save
+        </button>
+      </div>
+    </form>
+  </main>
+</div>
+
+<script>
+  const App = { BASE_URL: '<?= $BASE ?>', APPOINTMENT_ID: <?= $appointment_id ?> };
+</script>
+<script src="<?= $BASE ?>assets/js/staff-medical-form.js?<?= $V ?>"></script>
+<script src="<?= $BASE ?>assets/js/dashboard.js?<?= $V ?>"></script>
+</body>
+</html>

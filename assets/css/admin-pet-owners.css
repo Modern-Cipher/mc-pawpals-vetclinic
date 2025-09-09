@@ -1,0 +1,104 @@
+/* assets/css/admin-pet-owners.css */
+
+/* --- BAGONG LAYOUT RULES PARA SA PAGE HEADER (ITO ANG FIX) --- */
+.page-head {
+    display: flex;
+    flex-wrap: wrap; /* Papayagan nitong mag-wrap ang mga items */
+    gap: 16px;       /* Espasyo sa pagitan ng title at tools */
+    margin-bottom: 24px;
+    align-items: center; /* Para pantay sa gitna (vertical) */
+}
+
+.page-head .page-title {
+    margin: 0;
+    flex-grow: 1; /* Hahayaan itong lumaki para itulak ang tools sa kanan */
+    flex-basis: 200px; /* Minimum na lapad bago ito mag-wrap */
+    font-size: 28px;
+}
+
+.page-head .page-tools {
+    display: flex;
+    flex-wrap: wrap; /* Papayagan ding mag-wrap ang filters at search bar */
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end; /* Para manatili sa kanan */
+    flex-grow: 1;
+    flex-basis: 350px; /* Minimum na lapad para sa tools bago mag-wrap */
+}
+/* --- END OF FIX --- */
+
+
+/* Filter buttons */
+.filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap; /* Para mag-adjust sa mobile */
+}
+
+.filters .btn {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filters .btn:hover {
+    background-color: #f1f5f9;
+}
+
+.filters .btn.active {
+    background-color: var(--primary-color-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+
+/* --- Mga pag-aayos para sa Table at Cards --- */
+
+/* Badge para sa Verified Status */
+.badge-verified {
+    background-color: #dcfce7;
+    color: #166534;
+    padding: 3px 8px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.badge-unverified {
+    background-color: #ffedd5;
+    color: #9a3412;
+    padding: 3px 8px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Card layout improvements */
+.cards .card .card-head {
+    align-items: flex-start; /* Para ma-align ang badge sa gilid */
+}
+
+.cards .card .card-head .avatar {
+    width: 40px;
+    height: 40px;
+}
+
+.cards .card .card-details {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.cards .card .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+}

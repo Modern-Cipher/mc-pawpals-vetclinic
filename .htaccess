@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /mc-pawpals-veterinary-clinic/
+DirectoryIndex index.php
+
+# allow real files/folders (assets/images/vendor libs)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# everything else to index.php
+RewriteRule ^ index.php [QSA,L]

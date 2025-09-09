@@ -1,0 +1,103 @@
+/* === Sidebar Tooltips (drop-in) === */
+:root{
+  --tt-bg: #111827;
+  --tt-fg: #ffffff;
+  --tt-shadow: 0 10px 24px rgba(0,0,0,.22);
+  --tt-radius: 8px;
+  --tt-pad: .45rem .6rem;
+  --tt-gap: 10px;         /* distance from icon */
+  --tt-z: 99999;          /* super high to sit on top */
+  --tt-font: .9rem;
+}
+
+/* Make sure tooltips can overflow out of the sidebar */
+.sidebar, .sidebar .menu, .sidebar .menu-item { overflow: visible !important; }
+.sidebar { position: relative; z-index: var(--tt-z); }
+
+/* Base anchor setup */
+.menu-item, .sub-menu a { position: relative; }
+
+/* Default hides label when collapsed (optional; your JS can toggle .is-collapsed) */
+.sidebar.is-collapsed .menu-item .label { display: none !important; }
+
+/* Tooltip bubble (prefers data-tip, falls back to title) */
+.menu-item[data-tip]::after,
+.sub-menu a[data-tip]::after {
+  content: attr(data-tip);
+}
+.menu-item[title]:not([data-tip])::after,
+.sub-menu a[title]:not([data-tip])::after {
+  content: attr(title);
+}
+
+.menu-item::after,
+.sub-menu a::after {
+  position: absolute;
+  left: calc(100% + var(--tt-gap));
+  top: 50%;
+  transform: translateY(-50%) scale(.98);
+  opacity: 0;
+  pointer-events: none;
+  background: var(--tt-bg);
+  color: var(--tt-fg);
+  padding: var(--tt-pad);
+  border-radius: var(--tt-radius);
+  white-space: nowrap;
+  box-shadow: var(--tt-shadow);
+  font-size: var(--tt-font);
+  line-height: 1.1;
+  transition: opacity .15s ease, transform .15s ease;
+  max-width: 320px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Arrow */
+.menu-item::before,
+.sub-menu a::before {
+  content: "";
+  position: absolute;
+  left: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 10px; height: 10px;
+  background: var(--tt-bg);
+  opacity: 0;
+  transition: opacity .15s ease;
+  pointer-events: none;
+}
+
+/* Show on hover + keyboard focus */
+@media (hover: hover) {
+  .menu-item:hover::after,
+  .menu-item:hover::before,
+  .sub-menu a:hover::after,
+  .sub-menu a:hover::before { opacity: 1; transform: translateY(-50%) scale(1); }
+}
+
+.menu-item:focus-visible::after,
+.menu-item:focus-visible::before,
+.sub-menu a:focus-visible::after,
+.sub-menu a:focus-visible::before {
+  opacity: 1; transform: translateY(-50%) scale(1);
+  outline: none;
+}
+
+/* Ensure page content doesn't overlay the tooltip */
+.sidebar + * { position: relative; z-index: 1; }
+
+/* Optional: when sidebar is on the RIGHT side, flip the tooltip */
+.sidebar.on-right .menu-item::after,
+.sidebar.on-right .sub-menu a::after {
+  right: calc(100% + var(--tt-gap));
+  left: auto;
+}
+.sidebar.on-right .menu-item::before,
+.sidebar.on-right .sub-menu a::before {
+  right: calc(100% + 6px);
+  left: auto;
+}
+
+/* Accessibility: high-contrast when item is danger */
+.menu-item.danger::after { background: #7f1d1d; }
+.menu-item.danger::before { background: #7f1d1d; }

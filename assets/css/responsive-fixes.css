@@ -1,0 +1,31 @@
+/* assets/css/responsive-fixes.css */
+
+/* Keep content clear of the sticky bottom nav */
+.content-with-btm-bar { padding-bottom: 72px; }
+
+/* Small screens */
+@media (max-width: 767.98px) {
+  .content-container { padding: 1rem; }
+  .page-head { gap: .75rem; }
+  .page-head h1 { font-size: 1.25rem; }
+  .page-tools .btn { padding: .55rem .8rem; border-radius: 10px; }
+
+  .appointment-layout { grid-template-columns: 1fr; gap: 1rem; }
+  .upcoming-appointments { order: 2; padding: 1rem; }
+  .calendar-container { order: 1; padding: .9rem; }
+
+  /* FullCalendar toolbar wraps cleanly on mobile */
+  .fc .fc-toolbar { flex-wrap: wrap; gap: .5rem; }
+  .fc .fc-toolbar-chunk { display: flex !important; flex-wrap: wrap; gap: .5rem; }
+  .fc .fc-button { border-radius: 10px; padding: .4rem .6rem; }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .appointment-layout { grid-template-columns: 1fr; }
+  .upcoming-appointments { order: 2; }
+  .calendar-container { order: 1; }
+}
+
+/* Avoid any horizontal overflow */
+.fc { width: 100%; min-width: 0; }

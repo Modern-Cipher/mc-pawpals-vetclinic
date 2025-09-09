@@ -1,0 +1,274 @@
+/* ==============================================
+    MAIN DASHBOARD LAYOUT FIX (PERMANENT)
+==============================================
+*/
+
+/* Ang `body` ang magiging main container. */
+body {
+    position: relative;
+    height: 100vh;
+    overflow: hidden; /* Pinipigilan ang buong page na mag-scroll */
+}
+
+/* Kailangan nating i-target ang container na may hawak ng topbar, content, etc.
+   Kung iba ang class name nito sa inyo, pakipalitan lang ang `.content-wrapper`. */
+.content-wrapper {
+    position: relative;
+    height: 100%;
+}
+
+/* Inilalagay ang TOPBAR sa pinakataas, na may taas na 60px. */
+.topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px; /* Paki-adjust kung iba ang taas ng inyong topbar */
+    z-index: 100;
+}
+
+/* Inilalagay ang CONTENT sa gitna.
+   Nagsisimula ito sa ilalim ng topbar (top: 60px) at nagtatapos sa ibabaw ng footer (bottom: 70px).
+   Ito lang ang mag-i-scroll. */
+main.content {
+    position: absolute;
+    top: 60px; /* Dapat katumbas ng taas ng .topbar */
+    bottom: 70px; /* Dapat katumbas ng taas ng .mobile-nav sa ibaba */
+    left: 0;
+    right: 0;
+    overflow-y: auto; /* Pinapagana ang vertical scrolling */
+    -webkit-overflow-scrolling: touch; /* Para smooth sa iOS */
+    padding: 0; 
+    box-sizing: border-box;
+}
+
+/* Inilalagay ang FOOTER sa pinakababa, na may taas na 70px.
+   Paki-palitan ang `footer.mobile-nav` kung iba ang tag/class ng inyong footer. */
+footer.mobile-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px; /* Paki-adjust kung iba ang taas ng inyong footer */
+    z-index: 100;
+}
+
+
+/* ==============================================
+    APPOINTMENTS PAGE STYLES
+==============================================
+*/
+
+.page-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 14px;
+    padding: 1.5rem 1.5rem 0 1.5rem;
+}
+
+.kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 0 1.5rem;
+}
+
+.card {
+    margin: 0 1.5rem 1.5rem 1.5rem;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.kpi {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 14px;
+}
+.kpi-num { font-size: 22px; font-weight: 800; }
+.kpi-label { color: #64748b; }
+
+.seg {
+    display: inline-flex;
+    background: #edf2f7;
+    border-radius: 999px;
+    padding: 4px;
+    flex-shrink: 0;
+}
+.seg button {
+    border: 0;
+    background: transparent;
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease-in-out;
+}
+.seg button.active {
+    background: #20B2AA;
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.table-wrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: separate; border-spacing: 0; }
+.table th, .table td {
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: top;
+}
+.table thead th {
+    background: #f8fafc;
+    font-size: .8rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.col-actions { width: 220px; }
+.status-note {
+    font-size: 0.8rem;
+    margin-top: 5px;
+    display: block;
+    white-space: normal;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: .78rem;
+    color: #fff;
+    font-weight: 700;
+}
+.badge.pending { background: #f59e0b; }
+.badge.confirmed { background: #10b981; }
+.badge.completed { background: #64748b; }
+.badge.cancelled { background: #ef4444; }
+.badge.noshow { background: #9ca3af; }
+
+.row-actions { display: flex; gap: .35rem; flex-wrap: wrap; }
+.btn-xs {
+    padding: 6px 9px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    cursor: pointer;
+    font-weight: 600;
+}
+.btn-xs.primary { background: #20B2AA; color: #fff; border-color: #20B2AA; }
+.btn-xs.warn { background: #ef4444; color: #fff; border-color: #ef4444; }
+.btn-xs.gray { background: #e5e7eb; color: #374151; border-color: #d1d5db;}
+.btn-xs.ghost { background: #fff; color: #34495E; }
+.btn-xs:disabled { opacity: .6; cursor: not-allowed; }
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    background: #20B2AA;
+    color: #fff;
+    border: 0;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ==============================================
+    RESPONSIVE STYLES FOR MOBILE 
+==============================================
+*/
+@media screen and (max-width: 768px) {
+    .hide-sm { display: none; }
+
+    .page-head {
+        padding-top: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    .toolbar {
+        width: 100%;
+        overflow: hidden;
+        /* FIX 1: This will center the tab buttons container */
+        justify-content: center;
+    }
+    .seg {
+        /* REMOVED flex-grow: 1; */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .seg::-webkit-scrollbar { display: none; }
+    .seg { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .seg button {
+        padding: 6px clamp(0.4rem, 2vw, 0.6rem);
+        font-size: clamp(0.75rem, 2.5vw, 0.85rem);
+    }
+
+    #refreshBtn {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 999;
+    }
+    /* FIX 2: This makes sure the icon inside has no extra margin */
+    #refreshBtn > i {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+
+    .table thead { display: none; }
+    .table tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .table td {
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border-bottom: 1px solid #eef2f5;
+    }
+    .table td:last-child { border-bottom: 0; }
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: calc(50% - 2rem);
+        text-align: left;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        color: #6b7280;
+    }
+    .table td.col-actions { padding-left: 1rem; text-align: left; }
+    .row-actions { justify-content: flex-start; }
+}
+
+@media screen and (max-width: 480px) {
+    .kpis { grid-template-columns: 1fr; }
+}

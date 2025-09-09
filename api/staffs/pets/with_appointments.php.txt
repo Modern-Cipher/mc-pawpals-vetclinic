@@ -1,0 +1,42 @@
+<?php
+// api/staffs/pets/with_appointments.php
+require_once __DIR__ . '/../../../middleware/auth.php';
+require_login(['staff']);
+require_once __DIR__ . '/../../../config/connection.php';
+header('Content-Type: application/json');
+
+try {
+    $staff_id = (int)($_SESSION['user']['id'] ?? 0);
+    $pdo = db();
+    // UPDATED: Only selects pets with CONFIRMED appointments
+    $stmt = $pdo->prepare("
+        SELECT DISTINCT
+            p.id, p.name AS pet_name, p.photo_path,
+            CONCAT(u.first_name, ' ', u.last_name) AS owner_name
+        FROM pets p
+        JOIN appointments a ON p.id = a.pet_id
+        JOIN users u ON p.user_id = u.id
+        WHERE a.status = 'Confirmed' AND p.deleted_at IS NULL
+        ORDER BY
+            CASE 
+                WHEN a.staff_id_assigned = :staff_id THEN 1
+                ELSE 2
+            END ASC,
+            a.appointment_datetime ASC
+        LIMIT 20
+    ");
+    $stmt->execute([':staff_id' => $staff_id]);
+    $pets = $stmt->fetchAll();
+
+    $BASE = base_path();
+    foreach ($pets as &$pet) {
+        $pet['photo_url'] = $pet['photo_path'] ? ($BASE . ltrim($pet['photo_path'], '/')) : null;
+    }
+
+    echo json_encode(['ok' => true, 'pets' => $pets]);
+
+} catch (Throwable $e) {
+    http_response_code(500);
+    error_log("Pet carousel fetch failed: " . $e->getMessage());
+    echo json_encode(['ok' => false, 'error' => 'Server error.']);
+}

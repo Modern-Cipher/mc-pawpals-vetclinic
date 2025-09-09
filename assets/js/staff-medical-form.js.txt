@@ -1,0 +1,223 @@
+// assets/js/staff-medical-form.js
+document.addEventListener('DOMContentLoaded', () => {
+  // ... (same helpers as your paste) ...
+  function getAppBasePath() {
+    const s = Array.from(document.scripts).find(sc => (sc.src||'').includes('staff-medical-form.js'));
+    if (s) { const url = new URL(s.src, location.origin); const idx = url.pathname.indexOf('/assets/'); if (idx > 0) return url.pathname.substring(0, idx) + '/'; }
+    const parts = location.pathname.split('/').filter(Boolean);
+    if (parts.length > 0) return '/' + parts[0] + '/';
+    return '/';
+  }
+  const BASE = (window.App && App.BASE_URL) ? App.BASE_URL : getAppBasePath();
+  function getApptId() {
+    if (window.App && Number(App.APPOINTMENT_ID) > 0) return Number(App.APPOINTMENT_ID);
+    const qs = new URLSearchParams(location.search); const qid = Number(qs.get('appointment_id') || 0);
+    if (qid > 0) return qid; const hid = Number(document.querySelector('input[name="appointment_id"]')?.value || 0); return hid || 0;
+  }
+  const APPT = getApptId();
+
+  const tabs = document.querySelectorAll('.tab-link');
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => tab.addEventListener('click', () => {
+    tabs.forEach(t=>t.classList.remove('active')); tab.classList.add('active');
+    tabContents.forEach(c=>c.classList.remove('active')); const target = document.getElementById(tab.dataset.tab); if(target) target.classList.add('active');
+  }));
+
+  const patientInfo = document.getElementById('patientInfo');
+  const form = document.getElementById('consultationForm');
+
+  document.querySelectorAll('.seg .seg-head').forEach(hd=>{
+    hd.addEventListener('click', (e)=>{ if (e.target.closest('.add-row')) return; hd.parentElement.classList.toggle('collapsed'); });
+  });
+
+  const NOIMG = 'data:image/svg+xml;utf8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="320" height="200" viewBox="0 0 320 200"><rect width="320" height="200" fill="#f3f4f6"/><g fill="#9ca3af"><circle cx="160" cy="90" r="34"/><rect x="95" y="132" width="130" height="30" rx="8"/></g></svg>`);
+  const h = s => String(s??'').replace(/[&<>"']/g,m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+
+  // Row templates (same as your paste) ...
+  const rows = { /* ... same as your message ... */ 
+    vacc: () => `<div class="row-grid" data-type="vacc">
+      <input placeholder="Vaccine name*" data-k="vaccine_name" required>
+      <input placeholder="Dose / Batch" data-k="dose_no">
+      <input type="date" data-k="date_administered" required>
+      <input type="date" data-k="next_due_date">
+      <input placeholder="Remarks" data-k="remarks">
+      <button type="button" class="icon del"><i class="fa-solid fa-xmark"></i></button>
+    </div>`,
+    deworm: () => `<div class="row-grid" data-type="deworm">
+      <input placeholder="Product name*" data-k="product_name" required>
+      <input placeholder="Dose" data-k="dose">
+      <input placeholder="Targets" data-k="targets">
+      <input type="date" data-k="date_administered" required>
+      <input type="date" data-k="next_due_date">
+      <input placeholder="Remarks" data-k="remarks">
+      <button type="button" class="icon del"><i class="fa-solid fa-xmark"></i></button>
+    </div>`,
+    prev: () => `<div class="row-grid" data-type="prev">
+      <select data-k="type"><option value="tick_flea">Tick/Flea</option><option value="heartworm">Heartworm</option><option value="broad_spectrum">Broad Spectrum</option><option value="other">Other</option></select>
+      <input placeholder="Product name*" data-k="product_name" required>
+      <select data-k="route"><option value="oral">Oral</option><option value="topical">Topical</option><option value="injection">Injection</option><option value="other">Other</option></select>
+      <input type="date" data-k="date_administered" required>
+      <input type="date" data-k="next_due_date">
+      <input placeholder="Remarks" data-k="remarks">
+      <button type="button" class="icon del"><i class="fa-solid fa-xmark"></i></button>
+    </div>`,
+    meds: () => `<div class="row-grid" data-type="meds">
+      <input placeholder="Drug name*" data-k="drug_name" required>
+      <input placeholder="Dosage" data-k="dosage">
+      <input placeholder="Frequency" data-k="frequency">
+      <input type="date" data-k="start_date">
+      <input type="date" data-k="end_date">
+      <input placeholder="Notes" data-k="notes">
+      <button type="button" class="icon del"><i class="fa-solid fa-xmark"></i></button>
+    </div>`,
+    allergy: () => `<div class="row-grid" data-type="allergy">
+      <input placeholder="Allergen*" data-k="allergen" required>
+      <input placeholder="Reaction" data-k="reaction">
+      <select data-k="severity"><option value="mild">mild</option><option value="moderate">moderate</option><option value="severe">severe</option></select>
+      <input placeholder="Notes" data-k="notes">
+      <button type="button" class="icon del"><i class="fa-solid fa-xmark"></i></button>
+    </div>`
+  };
+
+  document.querySelectorAll('.add-row').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const hostSel = btn.dataset.target; const host = document.querySelector(hostSel); if (!host) return;
+      if (hostSel==='#tblVacc') host.insertAdjacentHTML('beforeend', rows.vacc());
+      if (hostSel==='#tblDeworm') host.insertAdjacentHTML('beforeend', rows.deworm());
+      if (hostSel==='#tblPrev') host.insertAdjacentHTML('beforeend', rows.prev());
+      if (hostSel==='#tblMeds') host.insertAdjacentHTML('beforeend', rows.meds());
+      if (hostSel==='#tblAllergy') host.insertAdjacentHTML('beforeend', rows.allergy());
+    });
+  });
+  document.body.addEventListener('click', e=>{
+    const btn = e.target.closest('.icon.del'); if (btn) btn.closest('.row-grid')?.remove();
+  });
+
+  let EDIT_MODE = false;
+
+  function populateRows(hostSel, arr, templateKey) {
+    const host = document.querySelector(hostSel); if (!host) return;
+    host.innerHTML = '';
+    (arr||[]).forEach(obj=>{
+      const map = {vacc:'#tblVacc',deworm:'#tblDeworm',prev:'#tblPrev',meds:'#tblMeds',allergy:'#tblAllergy'};
+      const html = rows[templateKey](); const tmp = document.createElement('div'); tmp.innerHTML = html;
+      const row = tmp.firstElementChild;
+      row.querySelectorAll('[data-k]').forEach(inp=>{
+        const k = inp.dataset.k; if (k in obj) inp.value = obj[k] ?? '';
+      });
+      host.appendChild(row);
+    });
+  }
+
+  async function loadRecordIfAny() {
+    try{
+      const r = await fetch(`${BASE}api/staffs/medical/get_by_appointment?appointment_id=${APPT}`, {credentials:'same-origin'});
+      const j = await r.json();
+      if (!j.ok || !j.exists) return;
+      EDIT_MODE = true;
+
+      // Fill SOAP
+      const m = j.record||{};
+      (id=>{ const el=document.getElementById(id); if(el) el.value = m[id] ?? ''; })('weight_kg');
+      (id=>{ const el=document.getElementById(id); if(el) el.value = m[id] ?? ''; })('temperature_c');
+      ['subjective','objective','assessment','plan'].forEach(id=>{
+        const el=document.getElementById(id); if(el){ el.value = m[id]||''; const ev=new Event('input'); el.dispatchEvent(ev); }
+      });
+
+      // Fill services
+      const s = j.services||{};
+      populateRows('#tblVacc',   s.vaccinations, 'vacc');
+      populateRows('#tblDeworm', s.deworming,    'deworm');
+      populateRows('#tblPrev',   s.preventions,  'prev');
+      populateRows('#tblMeds',   s.medications,  'meds');
+      populateRows('#tblAllergy',s.allergies,    'allergy');
+    }catch(e){ console.warn('loadRecordIfAny:', e); }
+  }
+
+  // --- Load appointment meta + maybe existing record ------------------------
+  async function loadMeta(){
+    if (!APPT || APPT <= 0) {
+      patientInfo.innerHTML = `<div class="error">Missing appointment id. Open this form from the Records page.</div>`;
+      return;
+    }
+    try{
+      const r = await fetch(`${BASE}api/staffs/medical/appointment_meta?appointment_id=${APPT}`, {credentials:'same-origin'});
+      const j = await r.json();
+      if (!j.ok) throw new Error(j.error || 'Failed to load');
+
+      const photo = j.pet?.photo_url || NOIMG;
+      patientInfo.innerHTML = `
+        <div class="patient-head">
+          <img src="${photo}" onerror="this.onerror=null;this.src='${NOIMG}'" alt="">
+          <div>
+            <div class="pet-name">${h(j.pet?.name || '')}</div>
+            <div class="owner-info">Owner: ${h(j.owner_name || '')}</div>
+            <div class="muted">Species/Breed: ${h(j.pet?.species || '-')}${j.pet?.breed?(' • '+h(j.pet.breed)):''}</div>
+            <div class="muted">Appt: ${h(j.appt_human || '')}</div>
+          </div>
+        </div>`;
+      if (j.has_record) await loadRecordIfAny();
+    }catch(e){
+      console.error(e);
+      patientInfo.innerHTML = `<div class="error">Failed to load appointment info.</div>`;
+    }
+  }
+  loadMeta();
+
+  // Autosize
+  document.querySelectorAll('textarea').forEach(t=>{
+    const grow=()=>{ t.style.height='auto'; t.style.height=(t.scrollHeight+2)+'px'; };
+    t.addEventListener('input', grow); grow();
+  });
+
+  // Submit
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+
+    for (const id of ['subjective','objective','assessment','plan']) {
+      const el = document.getElementById(id);
+      if (el && !el.value.trim()) {
+        el.focus();
+        Swal.fire('Complete SOAP', `Please fill the ${id.toUpperCase()} field.`, 'warning');
+        return;
+      }
+    }
+    const collectRows = (hostSel)=>{
+      const out=[]; document.querySelectorAll(hostSel+' .row-grid').forEach(r=>{
+        const obj={}; r.querySelectorAll('[data-k]').forEach(inp=>obj[inp.dataset.k]=(inp.value||'').trim());
+        if (Object.values(obj).some(v=>v!=='')) out.push(obj);
+      });
+      return out;
+    };
+
+    const services = {
+      vaccinations: collectRows('#tblVacc'),
+      deworming:    collectRows('#tblDeworm'),
+      preventions:  collectRows('#tblPrev'),
+      medications:  collectRows('#tblMeds'),
+      allergies:    collectRows('#tblAllergy'),
+    };
+
+    const fd = new FormData(form);
+    if (!fd.get('appointment_id') && APPT>0) fd.append('appointment_id', String(APPT));
+    fd.append('services_json', JSON.stringify(services));
+
+    const url = EDIT_MODE ? `${BASE}api/staffs/medical/update` : `${BASE}api/staffs/medical/create`;
+
+    try{
+      const res = await fetch(url, { method:'POST', body: fd, credentials:'same-origin' });
+      const ctype = (res.headers.get('content-type')||'').toLowerCase();
+      if (!ctype.includes('application/json')) {
+        const txt = await res.text();
+        throw new Error((txt.match(/<title>(.*?)<\/title>/i)?.[1]) || txt.slice(0,200));
+      }
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.error || 'Save failed');
+      await Swal.fire('Saved', (EDIT_MODE?'Record updated.':'Consultation saved. Appointment completed.'), 'success');
+      location.href = `${BASE}dashboard/staffs/medical`;
+    }catch(err){
+      console.error(err);
+      Swal.fire('Error', err.message || 'Server error', 'error');
+    }
+  });
+});

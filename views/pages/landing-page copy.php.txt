@@ -1,0 +1,347 @@
+<?php
+$BASE = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\') . '/';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PawPals - We take care of your pets with experts</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+  <!-- Project CSS -->
+  <link rel="stylesheet" href="<?= $BASE ?>assets/css/landing-page.css" />
+
+  <!-- JS libs (defer) -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Flip.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/glide.min.js" defer></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js" defer></script>
+
+  <!-- Project JS -->
+  <script src="<?= $BASE ?>assets/js/landing-page.js" defer></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar" role="navigation" aria-label="Main Navigation">
+    <a href="<?= $BASE ?>" class="logo">PawPals</a>
+    <ul class="navbar-nav" aria-hidden="true">
+      <li class="nav-item"><a href="#home" class="nav-link">Home</a></li>
+      <li class="nav-item"><a href="#announcements" class="nav-link">Announcements</a></li>
+      <li class="nav-item"><a href="#news" class="nav-link">Pet Care</a></li>
+      <li class="nav-item"><a href="#testimonials" class="nav-link">Testimonials</a></li>
+      <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+      <li class="nav-item navbar-auth-mobile">
+        <button class="btn" onclick="location.href='<?= $BASE ?>auth/login'">Login / Sign Up</button>
+      </li>
+    </ul>
+    <button class="btn navbar-auth-desktop" onclick="location.href='<?= $BASE ?>auth/login'">Login / Sign Up</button>
+    <div class="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu" role="button">
+      <i class="fas fa-bars"></i>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header id="home" class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-content" data-aos="fade-right">
+        <h1>We take care of your pets with experts 🐱</h1>
+        <p>The best place for your best friend. Providing top-tier veterinary services and compassionate care in Marawi City.<br>A commitment to excellence in every wag and purr.</p>
+        <div class="hero-actions">
+          <a href="<?= $BASE ?>auth/signup" class="btn">Get Started</a>
+        </div>
+      </div>
+
+      <div class="hero-image-container" data-aos="fade-left">
+        <div class="hero-image-circle">
+          <img src="<?= $BASE ?>assets/images/veterinarian_2.jpg"
+               alt="Veterinarian taking care of a pet"
+               loading="eager" decoding="async">
+        </div>
+
+        <div class="floating-badges">
+          <span class="badge badge-vaccination">Vaccination</span>
+          <span class="badge badge-health">Health Check</span>
+          <span class="badge badge-care">Pet Care</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="app-content">
+    <!-- Announcements -->
+    <section id="announcements" class="content-section" data-aos="fade-up">
+      <div class="container">
+        <h2>Announcements</h2>
+        <div id="announcements-slider" class="splide" aria-label="Announcements Slider">
+          <div class="splide__track">
+            <ul class="splide__list">
+              <li class="splide__slide"
+                  data-title="Huwag Isama sa Biyahe ang ASF"
+                  data-description="Paalala mula sa Department of Agriculture: Mahigpit na ipinagbabawal ang pagbiyahe ng buhay na baboy, karne, at produktong gawa sa karneng baboy mula sa mga lugar na apektado ng African Swine Fever (ASF)."
+                  data-image="<?= $BASE ?>assets/images/asf_travel_warning.png"
+                  data-type="external"
+                  data-url="https://www.da.gov.ph/downloads/advisories/african-swine-fever/">
+                <div class="slide-content">
+                  <h3 class="slide-title">Huwag Isama sa Biyahe ang ASF</h3>
+                  <div class="slide-image-container">
+                    <img src="<?= $BASE ?>assets/images/asf_travel_warning.png" alt="ASF Travel Warning">
+                  </div>
+                  <p class="slide-description">Paalala mula sa Department of Agriculture upang maiwasan ang pagkalat ng African Swine Fever.</p>
+                  <button class="btn view-details">View Details</button>
+                </div>
+              </li>
+
+              <li class="splide__slide"
+                  data-title="BIIKCINATED SA ASF"
+                  data-description="Para sa controlled use ng bakuna laban sa ASF, i-scan ang QR code o bisitahin ang aming klinika para sa karagdagang impormasyon at schedule ng pagbabakuna."
+                  data-image="<?= $BASE ?>assets/images/biikcinated_asf.png"
+                  data-type="external"
+                  data-url="https://example.com/biikcinated-details">
+                <div class="slide-content">
+                  <h3 class="slide-title">BIIKCINATED SA ASF</h3>
+                  <div class="slide-image-container">
+                    <img src="<?= $BASE ?>assets/images/biikcinated_asf.png" alt="BIIKCINATED SA ASF">
+                  </div>
+                  <p class="slide-description">I-scan ang QR code para sa buong detalye ng Controlled Use of the Vaccine.</p>
+                  <button class="btn view-details">View Details</button>
+                </div>
+              </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pet Care Tips -->
+    <section id="news" class="content-section" style="background-color:#F8F9FA;" data-aos="fade-left">
+      <div class="container">
+        <h2>Pet Care Tips</h2>
+
+        <div class="filter-controls">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="diet">Diet</button>
+          <button class="filter-btn" data-filter="puppy">Puppy Care</button>
+          <button class="filter-btn" data-filter="health">Health</button>
+        </div>
+
+        <div class="tips-grid">
+          <div class="card" data-category="diet" data-aos="zoom-in">
+            <img src="<?= $BASE ?>assets/images/img1.png" alt="">
+            <div class="card-content">
+              <h3>5 Tips for a Healthy Pet Diet</h3>
+              <p>Ensure your furry friend gets the best nutrition with these simple dietary tips.</p>
+              <a href="#" class="btn-read-more">Read More</a>
+            </div>
+          </div>
+
+          <div class="card" data-category="puppy" data-aos="zoom-in">
+            <img src="<?= $BASE ?>assets/images/img2.png" alt="">
+            <div class="card-content">
+              <h3>Welcoming a New Puppy</h3>
+              <p>From socialization to house training, here's what you need for a smooth transition.</p>
+              <a href="#" class="btn-read-more">Read More</a>
+            </div>
+          </div>
+
+          <div class="card" data-category="health" data-aos="zoom-in">
+            <img src="<?= $BASE ?>assets/images/img3.png" alt="">
+            <div class="card-content">
+              <h3>Why Vaccinations are Crucial</h3>
+              <p>Learn about the core vaccines that protect your pet from common and serious diseases.</p>
+              <a href="#" class="btn-read-more">Read More</a>
+            </div>
+          </div>
+
+          <div class="card" data-category="health" data-aos="zoom-in">
+            <img src="<?= $BASE ?>assets/images/veterinarian_2.jpg" alt="">
+            <div class="card-content">
+              <h3>Recognizing Signs of Illness</h3>
+              <p>Know when to bring your pet to the vet. Early detection is key to a long, healthy life.</p>
+              <a href="#" class="btn-read-more">Read More</a>
+            </div>
+          </div>
+
+          <div class="card" data-category="diet" data-aos="zoom-in">
+            <img src="<?= $BASE ?>assets/images/img1.png" alt="">
+            <div class="card-content">
+              <h3>Toxic Foods for Dogs & Cats</h3>
+              <p>A quick guide on common household foods that are dangerous for your pets.</p>
+              <a href="#" class="btn-read-more">Read More</a>
+            </div>
+          </div>
+
+          <div class="card" data-category="puppy" data-aos="zoom-in">
+            <img src="<?= $BASE ?>assets/images/img2.png" alt="">
+            <div class="card-content">
+              <h3>The First Vet Visit</h3>
+              <p>What to expect and how to prepare your new puppy for their first check-up.</p>
+              <a href="#" class="btn-read-more">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="content-section testimonials-section" data-aos="fade-right">
+      <div class="container">
+        <h2>What Our Clients Say</h2>
+
+        <div id="testimonials-slider" class="glide">
+          <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides">
+              <li class="glide__slide">
+                <div class="testimonial-card card">
+                  <div class="testimonial-header">
+                    <img src="<?= $BASE ?>assets/images/person1.jpg" alt="" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                      <p class="author">Dr. Emily Chen</p>
+                      <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                    </div>
+                  </div>
+                  <p class="quote">"PawPals has transformed how I manage my pet's health..."</p>
+                </div>
+              </li>
+
+              <li class="glide__slide">
+                <div class="testimonial-card card">
+                  <div class="testimonial-header">
+                    <img src="<?= $BASE ?>assets/images/person2.jpg" alt="" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                      <p class="author">Mr. David Kim</p>
+                      <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    </div>
+                  </div>
+                  <p class="quote">"The veterinarians here are incredibly caring and knowledgeable..."</p>
+                </div>
+              </li>
+
+              <li class="glide__slide">
+                <div class="testimonial-card card">
+                  <div class="testimonial-header">
+                    <img src="<?= $BASE ?>assets/images/person3.jpg" alt="" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                      <p class="author">Ms. Jessica Lim</p>
+                      <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+                    </div>
+                  </div>
+                  <p class="quote">"I appreciate the timely announcements and helpful pet care tips..."</p>
+                </div>
+              </li>
+
+              <li class="glide__slide">
+                <div class="testimonial-card card">
+                  <div class="testimonial-header">
+                    <img src="<?= $BASE ?>assets/images/person4.jpg" alt="" class="testimonial-avatar">
+                    <div class="testimonial-info">
+                      <p class="author">Mr. Robert Garcia</p>
+                      <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    </div>
+                  </div>
+                  <p class="quote">"Exceptional service! They handled my anxious cat with such patience..."</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><i class="fas fa-chevron-left"></i></button>
+            <button class="glide__arrow glide__arrow--right" data-glide-dir=">"><i class="fas fa-chevron-right"></i></button>
+          </div>
+
+          <div class="glide__bullets" data-glide-el="controls[nav]"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About + Feedback -->
+    <section id="about" class="content-section" data-aos="zoom-in-up">
+      <div class="container feedback-grid">
+        <div class="about-text">
+          <h2>About PawPals</h2>
+          <p>A digital platform designed to enhance pet care for the clients of Marawi Veterinary Clinic. We aim to replace inefficient manual processes with a streamlined system, fostering responsible pet ownership in the community.</p>
+        </div>
+        <div class="feedback-form">
+          <form class="card" id="feedbackForm" novalidate>
+            <h3>Leave a Review</h3>
+            <p>How was your experience? Let us know!</p>
+            <div class="form-stars" id="feedbackStars">
+              <i class="fas fa-star" data-value="1"></i><i class="fas fa-star" data-value="2"></i><i class="fas fa-star" data-value="3"></i><i class="fas fa-star" data-value="4"></i><i class="fas fa-star" data-value="5"></i>
+            </div>
+            <input type="text" id="feedbackName" placeholder="Your Full Name" required>
+            <input type="email" id="feedbackEmail" placeholder="Your Email Address" required>
+            <textarea id="feedbackMessage" placeholder="Your Message..." required rows="4"></textarea>
+            <button type="submit" class="btn">Submit Feedback</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-section about-us">
+        <h3>PawPals</h3>
+        <p>Dedicated to providing top-tier veterinary services and compassionate care for your beloved pets in Marawi City.</p>
+      </div>
+      <div class="footer-section quick-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#announcements">Announcements</a></li>
+          <li><a href="#news">Pet Care Tips</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="<?= $BASE ?>auth/login">Login</a></li>
+          <li><a href="<?= $BASE ?>auth/signup">Sign Up</a></li>
+        </ul>
+      </div>
+      <div class="footer-section contact-info">
+        <h3>Contact Us</h3>
+        <p><i class="fas fa-map-marker-alt"></i> Marawi City, Philippines</p>
+        <p><i class="fas fa-phone"></i> +63 912 345 6789</p>
+        <p><i class="fas fa-envelope"></i> info@pawpals.com</p>
+      </div>
+      <div class="footer-section social-media">
+        <h3>Follow Us</h3>
+        <div class="social-icons">
+          <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 PawPals. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Announcement Modal -->
+  <div id="announcementModal" class="modal-overlay">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h3 id="modalTitle"></h3>
+      <div id="modalImageContainer"></div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+</body>
+</html>

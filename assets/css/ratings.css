@@ -1,0 +1,123 @@
+/* ================= Desktop table (unchanged look) ================= */
+#ratingsTable thead th,
+#ratingsTable tbody td { vertical-align: middle; }
+#ratingsTable .text-wrap { white-space: normal; max-width: 520px; }
+#ratingsTable .namebox { display:flex; align-items:center; gap:.75rem; }
+#ratingsTable .namebox img{
+  width:36px; height:36px; border-radius:50%; object-fit:cover; flex:0 0 36px;
+  box-shadow:0 0 0 2px #fff, 0 0 0 3px #e2e8f0;
+}
+
+/* Action icons */
+.btn-icon{border:none;background:#f8fafc;border-radius:8px;width:34px;height:34px;display:inline-grid;place-items:center;}
+.btn-icon:hover{background:#e2e8f0}
+.btn-icon.danger{background:#fff1f2;color:#b91c1c}
+.btn-icon.danger:hover{background:#ffe4e6}
+
+/* Status badges */
+.badge-status{ padding:.325rem .6rem; border-radius:999px; font-size:.78rem; }
+.badge-status.pending{ background:#fff7ed; color:#9a3412; border:1px solid #fed7aa; }
+.badge-status.approved{ background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }
+.badge-status.archived{ background:#f1f5f9; color:#334155; border:1px solid #cbd5e1; }
+
+/* Stars (both views) */
+.star-wrap{ position:relative; display:inline-block; line-height:1; }
+.star-bg{ color:#cbd5e1; letter-spacing:2px; }
+.star-fill{
+  color:#f59e0b; letter-spacing:2px; position:absolute; inset:0 auto 0 0;
+  white-space:nowrap; overflow:hidden; width:0;
+}
+.star-val{ display:inline-block; min-width:2.2ch; margin-left:4px; }
+
+/* ================= Header badges (mobile tidy) ================= */
+@media (max-width: 767px){
+  .panel-head{ flex-direction:column; align-items:flex-start; gap:6px; }
+  .panel-head .badge{ margin-right:6px; margin-bottom:6px; }
+}
+
+/* ================= Mobile cards ================= */
+.ratings-mobile{ display:flex; flex-direction:column; gap:14px; }
+
+/* sticky search directly below the topbar; JS sets --admin-topbar */
+.ratings-mobile-search{
+  position: sticky;
+  top: calc(var(--admin-topbar, 64px) + 6px);
+  z-index: 100;
+  background:#f8fafc;
+  padding: 6px 0 10px;
+  backdrop-filter: blur(2px);
+}
+.ratings-mobile-search .form-control{
+  border-radius: 12px;
+  height: 42px;
+  box-shadow: 0 4px 10px rgba(2,6,23,.06);
+}
+
+/* Card */
+.rating-card{
+  background:#fff; border:1px solid #e5e7eb; border-radius:16px;
+  padding:14px; box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.rating-card .rc-head{
+  display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+}
+
+/* Avatar + identity */
+.rating-card .avatar{ display:flex; align-items:center; gap:10px; min-width:0; }
+.rating-card .avatar img{
+  width:44px;height:44px;border-radius:50%;object-fit:cover;flex:0 0 44px;
+  box-shadow:0 0 0 2px #fff, 0 0 0 3px #e2e8f0;
+}
+.rating-card .avatar > div{ min-width:0; }          /* allow truncation */
+.rating-card .rc-title{ font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rating-card .rc-email{ font-size:.78rem; color:#6b7280; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* Stars area (top-right, compact) */
+.rc-head .star-wrap{ font-size:16px; }
+.rc-head .star-val{ font-size:.78rem; color:#6b7280; }
+
+/* Message */
+.rating-card .rc-msg{ margin:.35rem 0 .55rem; color:#374151; }
+
+/* Footer row: badge + buttons */
+.rating-card .rc-foot{
+  display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:nowrap;
+}
+.rating-card .badge-status{
+  max-width: calc(100% - 140px); /* keep room for the 3 buttons */
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+
+/* Mobile buttons: bigger and easy to tap */
+.rating-card .btns{ display:flex; gap:8px; }
+.rating-card .btn-icon{
+  width:40px; height:40px; border-radius:12px;
+  background:#f8fafc; color:#334155; border:none;
+}
+.rating-card .btn-icon:hover{ background:#e2e8f0; }
+.rating-card .btn-icon.danger{ background:#fff1f2; color:#b91c1c; }
+.rating-card .btn-icon.danger:hover{ background:#ffe4e6; }
+
+/* Date */
+.rating-card .date{ font-size:.78rem; color:#6b7280; }
+
+/* Keep page content above bottom nav on mobile */
+@media (max-width: 767px){
+  .content { padding-bottom: calc(70px + env(safe-area-inset-bottom)); }
+}
+
+/* --- lightweight tooltips (works everywhere, no JS needed) --- */
+[data-tip] { position: relative; cursor: help; }
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%; top: -8px; transform: translate(-50%, -100%);
+  background:#111827; color:#fff; font-size:.72rem; line-height:1;
+  padding:.38rem .5rem; border-radius:6px; white-space:nowrap;
+  box-shadow:0 6px 18px rgba(0,0,0,.18);
+  opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease;
+  z-index: 30;
+}
+[data-tip]:hover::after, [data-tip]:focus::after {
+  opacity:1; transform: translate(-50%, calc(-100% - 2px));
+}

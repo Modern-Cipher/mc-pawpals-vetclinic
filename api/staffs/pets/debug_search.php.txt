@@ -1,0 +1,65 @@
+<?php
+// api/staffs/pets/debug_search.php
+
+// Show all PHP errors directly on the screen for debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+echo "<h1>Search Debugger</h1>";
+
+try {
+    echo "<p><strong>Step 1:</strong> Including required files...</p>";
+    require_once __DIR__ . '/../../../config/connection.php';
+    require_once __DIR__ . '/../../../middleware/auth.php';
+    echo "<p style='color:green;'><strong>OK:</strong> Files included successfully.</p><hr>";
+
+    echo "<p><strong>Step 2:</strong> Testing database connection...</p>";
+    $pdo = db();
+    echo "<p style='color:green;'><strong>OK:</strong> Database connection successful.</p><hr>";
+
+    echo "<p><strong>Step 3:</strong> Running the search query...</p>";
+    $q = 'alex'; // We will use a hardcoded search term for this test
+    $term = '%' . $q . '%';
+    
+    $sql = "
+        SELECT
+            p.id,
+            p.name AS pet_name,
+            p.photo_path,
+            CONCAT_WS(' ', u.first_name, u.last_name) AS owner_name
+        FROM pets p
+        JOIN users u ON u.id = p.user_id
+        WHERE p.deleted_at IS NULL
+          AND (
+                p.name LIKE :term
+             OR CONCAT_WS(' ', u.first_name, u.last_name) LIKE :term
+          )
+        ORDER BY p.name ASC
+        LIMIT 20
+    ";
+    
+    $st = $pdo->prepare($sql);
+    $st->bindValue(':term', $term, PDO::PARAM_STR);
+    $st->execute();
+    $rows = $st->fetchAll(PDO::FETCH_ASSOC) ?: [];
+    
+    echo "<p style='color:green;'><strong>OK:</strong> Search query executed without crashing.</p><hr>";
+
+    echo "<p><strong>Step 4:</strong> Search Results...</p>";
+    if (empty($rows)) {
+        echo "<p>No results found for 'alex'.</p>";
+    } else {
+        echo "<pre>";
+        print_r($rows);
+        echo "</pre>";
+    }
+
+} catch (Throwable $e) {
+    echo "<h2 style='color:red;'>AN ERROR OCCURRED!</h2>";
+    echo "<p><strong>Error Message:</strong> " . $e->getMessage() . "</p>";
+    echo "<p><strong>File:</strong> " . $e->getFile() . "</p>";
+    echo "<p><strong>Line:</strong> " . $e->getLine() . "</p>";
+    echo "<h3>Stack Trace:</h3>";
+    echo "<pre>" . $e->getTraceAsString() . "</pre>";
+}

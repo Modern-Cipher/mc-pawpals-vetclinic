@@ -1,0 +1,117 @@
+/* Responsive Table for Clinic Hours */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 20px;
+}
+
+.table-hours {
+    width: 100%;
+    min-width: 700px; /* Minimum width para sa desktop view */
+    border-collapse: collapse;
+    background: var(--card);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.table-hours th,
+.table-hours td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+}
+
+.table-hours thead {
+    background: var(--bg);
+    color: var(--ink);
+    font-weight: 700;
+}
+
+.table-hours tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-hours .day-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.table-hours .day-toggle .label {
+    font-weight: 500;
+}
+
+.table-hours .input-pair {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.table-hours .input-pair input {
+    width: 100px;
+}
+
+.table-hours .form-control {
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+}
+
+.table-hours .form-control:disabled {
+    background-color: #f8f9fa;
+    cursor: not-allowed;
+}
+
+/* Mobile-first approach: Stack table cells on smaller screens */
+@media (max-width: 768px) {
+    .table-container {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+    }
+
+    .table-hours {
+        min-width: 100%;
+        border: none;
+    }
+
+    .table-hours thead {
+        display: none;
+    }
+
+    .table-hours tr {
+        display: block;
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .table-hours td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 0;
+        border: none;
+    }
+
+    .table-hours td::before {
+        content: attr(data-label);
+        font-weight: 700;
+        color: var(--ink-2);
+        flex-basis: 50%;
+        text-align: left;
+        padding-right: 12px;
+    }
+}
+
+/* ... other CSS rules ... */
+
+.form-actions-right {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}

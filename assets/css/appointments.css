@@ -1,0 +1,247 @@
+/* assets/css/appointments.css */
+
+/* =========================
+    THEME / TOKENS
+    ========================= */
+:root{
+    --primary-color: var(--primary, #20B2AA);
+    --primary-color-dark: var(--primary-dark, #008080);
+    --border-color: var(--border, #EAEDED);
+    --text-dark: var(--ink, #34495E);
+    --text-medium: var(--ink-2, #7F8C8D);
+
+    /* FullCalendar */
+    --fc-border-color: var(--border-color);
+    --fc-day-today-bg-color: rgba(32,178,170,.10);
+    --fc-button-text-color: #fff;
+    --fc-button-bg-color: var(--primary-color);
+    --fc-button-border-color: var(--primary-color);
+    --fc-button-hover-bg-color: var(--primary-color-dark);
+    --fc-button-hover-border-color: var(--primary-color-dark);
+}
+
+/* =========================
+    PAGE LAYOUT
+    ========================= */
+.page-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.25rem;}
+.page-head h1{margin:0;line-height:1.2}
+
+.appointment-layout{display:grid;grid-template-columns:1fr;gap:1.25rem;margin-top:1.25rem;}
+@media (min-width:1024px){
+    .appointment-layout{grid-template-columns:minmax(280px,320px) 1fr;align-items:start;}
+}
+
+/* --- Side Panel Container --- */
+.side-panel {
+    background:#fff;
+    border-radius:12px;
+    padding:1.25rem;
+    border:1px solid var(--border-color);
+    height:fit-content;
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.side-panel h3{
+    margin:0 0 .75rem 0;
+    font-size:1.1rem;
+}
+
+/* --- Upcoming & History List Items --- */
+.appointment-item{
+    display:flex;gap:.75rem;align-items:flex-start;
+    padding:.75rem .75rem .75rem .9rem;border-radius:10px;margin-bottom:.5rem;
+    border:1px solid var(--border-color);background:#fff;transition:background-color .2s;
+    position:relative;overflow:hidden;
+}
+.appointment-item::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:4px;
+}
+.appointment-item:hover{background:#f8fafc}
+
+.service-status-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+.appointment-item .service{font-weight:600;color:var(--text-dark)}
+.appointment-item .pet-name{font-size:.92rem;color:var(--text-medium)}
+.appointment-item .datetime{font-size:.9rem;margin-top:2px}
+.appointment-item .thumb{
+    width:40px;height:40px;border-radius:50%;flex:0 0 40px;
+    background:#f2f6f8 center/cover no-repeat;border:1px solid var(--border-color);
+}
+.appointment-item .appt-right{flex:1}
+
+.appointment-item.status-pending::before{background:#f59e0b}
+.appointment-item.status-confirmed::before{background:var(--primary-color)}
+.appointment-item.status-cancelled::before,
+.appointment-item.status-no-show::before,
+.appointment-item.status-completed::before {
+    background: #9ca3af;
+}
+
+/* --- History Section Styles --- */
+.history-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+}
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+}
+.history-header h3 {
+    margin: 0;
+}
+.history-header i {
+    transition: transform 0.3s ease;
+    color: var(--text-medium);
+}
+.history-header i.rotated {
+    transform: rotate(180deg);
+}
+#historyList {
+    margin-top: 0.75rem;
+}
+#historyList .appointment-item {
+    opacity: 0.8;
+}
+#historyList .appointment-item .service {
+    /* text-decoration: line-through; <-- LINE REMOVED */
+}
+
+/* =========================
+    CALENDAR CARD
+    ========================= */
+.calendar-container{background:#fff;border-radius:12px;padding:1rem;border:1px solid var(--border-color);box-shadow:0 1px 2px rgba(0,0,0,.03);overflow:hidden;}
+@media (min-width:768px){.calendar-container{padding:1.25rem;}}
+
+.calendar-container .fc{font-family:inherit;font-size:.95rem;max-width:100%;margin:0 auto;}
+.calendar-container .fc .fc-toolbar{display:flex !important;align-items:center !important;justify-content:space-between !important;flex-wrap:wrap !important;gap:.5rem;}
+.calendar-container .fc .fc-toolbar-chunk{display:flex !important;gap:.5rem;opacity:1 !important;visibility:visible !important;}
+.calendar-container .fc .fc-button-group{display:inline-flex !important;}
+.calendar-container .fc .fc-button,
+.calendar-container .fc .fc-button-primary{
+    display:inline-flex !important;align-items:center;gap:.35rem;
+    color:var(--fc-button-text-color) !important;
+    background:var(--fc-button-bg-color) !important;border-color:var(--fc-button-border-color) !important;
+    border-radius:10px;padding:.45rem .65rem;font-weight:700;line-height:1;box-shadow:none !important;
+}
+.calendar-container .fc .fc-button:hover{background:var(--fc-button-hover-bg-color) !important;border-color:var(--fc-button-hover-border-color) !important;}
+.calendar-container .fc .fc-button:disabled{opacity:.65 !important}
+.calendar-container .fc .fc-toolbar-title{font-size:1.35rem;font-weight:800;letter-spacing:.2px;}
+@media (min-width:768px){.calendar-container .fc .fc-toolbar-title{font-size:1.5rem;}}
+.calendar-container .fc .fc-daygrid-day-number{padding:.5em;color:var(--text-dark)}
+.calendar-container .fc .fc-daygrid-day.fc-day-past{background:#f8fafc}
+
+.calendar-container .fc-daygrid-day{position:relative;}
+.calendar-container .fc-add-btn{
+    position:absolute;right:6px;top:6px;display:inline-flex;align-items:center;gap:.35rem;
+    background:#fff;border:1px solid var(--border-color);color:var(--primary-color);
+    padding:2px 6px;border-radius:999px;font-size:.75rem;line-height:1;cursor:pointer;
+    opacity:0;transform:translateY(-2px);transition:.15s;
+}
+.calendar-container .fc-daygrid-day:hover .fc-add-btn{opacity:1;transform:translateY(0);}
+.calendar-container .fc-add-btn i{font-size:.8rem;color:var(--primary-color);}
+@media (max-width:480px){.calendar-container .fc-add-btn .add-label{display:none;}}
+
+.calendar-container .fc .fc-event{cursor:pointer;border:none !important;padding:4px 6px;font-weight:700;position:relative;}
+.calendar-container .fc .fc-event:hover{opacity:.92;transform:translateY(-1px);}
+.calendar-container .fc .fc-event-pending{background:#f59e0b !important;color:#fff;}
+.calendar-container .fc .fc-event-confirmed{background:var(--primary-color) !important;color:#fff;}
+.calendar-container .fc .fc-event-completed{background:#64748b !important;color:#fff;opacity:.9;}
+.calendar-container .fc .fc-event-cancelled{ background:#ef4444 !important; color:#fff; }
+.calendar-container .fc .fc-event-noshow { background:#9ca3af !important; color:#fff; }
+
+/* =========================
+    MODAL / FORM
+    ========================= */
+.modal-body .row-2{display:grid;grid-template-columns:1fr;gap:1rem;}
+@media (min-width:640px){.modal-body .row-2{grid-template-columns:1fr 1fr;}}
+
+.modal{ padding:16px; }
+.modal-content{ width:100%; max-width:520px; max-height:calc(100vh - 32px); display:flex;flex-direction:column; border-radius:16px; }
+.modal-body{ overflow:auto; }
+@media (max-width:480px){
+    .modal{ padding:14px; }
+    .modal-content{ max-width:96vw; max-height:calc(100vh - 28px); border-radius:14px; }
+}
+
+.service-other-input{margin-top:.5rem;width:100%;padding:10px 12px;border:1px solid var(--border-color);border-radius:8px;display:none}
+
+/* =========================
+    PET PICKER
+    ========================= */
+.pet-picker{position:relative;}
+.pet-trigger{
+    width:100%;display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+    padding:10px 12px;border:1px solid var(--border-color);border-radius:8px;background:#fff;cursor:pointer;
+    font:inherit;color:var(--ink);
+}
+.pet-trigger .pet-thumb{width:32px;height:32px;border-radius:50%;background-size:cover;background-position:center;flex:0 0 32px;border:1px solid var(--border-color);}
+.pet-trigger .pet-thumb.placeholder{background:#f2f6f8;}
+.pet-trigger .pet-label{flex:1;text-align:left;font-weight:600;color:var(--ink);}
+.pet-picker.open .pet-trigger{box-shadow:0 0 0 3px rgba(32,178,170,.18);border-color:var(--primary-color);}
+.pet-menu{
+    position:absolute;left:0;right:0;top:calc(100% + 6px);background:#fff;border:1px solid var(--border-color);
+    border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.08);z-index:15;padding:6px;max-height:240px;overflow:auto;display:none;
+}
+.pet-picker.open .pet-menu{display:block;}
+.pet-option{display:flex;align-items:center;gap:.6rem;padding:8px;border-radius:8px;cursor:pointer;}
+.pet-option .pet-thumb{width:30px;height:30px;border-radius:50%;background-size:cover;background-position:center;border:1px solid var(--border-color);}
+.pet-option .name{font-weight:600;color:var(--ink);}
+.pet-option .meta{margin-left:auto;font-size:.85rem;color:var(--ink-2);}
+.pet-option:hover{background:#f7fafc;}
+.pet-empty{padding:10px;text-align:center;color:var(--ink-2);}
+.pet-empty.error{color:#E74C3C;}
+
+/* =========================
+    SWEETALERT DETAIL
+    ========================= */
+.swal2-popup .swal-appt{text-align:left;}
+.swal-appt .pet-wrap{display:flex;gap:.75rem;align-items:center;margin-bottom:.5rem;}
+.swal-pet-thumb{width:48px;height:48px;border-radius:50%;background:#f2f6f8 center/cover no-repeat;border:1px solid var(--border-color);}
+.swal-appt .when,.swal-appt .status,.swal-appt .notes, .swal-appt .vet{margin-top:.35rem;}
+.swal-appt .vet { font-weight: 600; color: var(--primary-color); }
+.swal-appt .actions{margin-top:1rem;display:flex;gap:.5rem;}
+.swal-appt .actions.actions-right{justify-content:flex-end}
+
+.btn-icon{
+    width:44px;height:44px;border-radius:12px;
+    display:inline-flex;align-items:center;justify-content:center;
+    background:#f2f6f8;border:1px solid var(--border-color);cursor:pointer;
+}
+.btn-icon:hover{background:#e9f1f3}
+.btn-icon i{font-size:1rem}
+.btn-danger{background:#E74C3C;color:#fff}
+.btn-danger:hover{opacity:.95}
+
+/* =========================
+    STATUS BADGE IN SIDE LIST
+    ========================= */
+.status-badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:.7rem;font-weight:700;color:#fff; line-height: 1.1;}
+.status-badge.pending{background:#f59e0b;}
+.status-badge.confirmed{background:#10b981;}
+.status-badge.completed{background:#64748b;}
+.status-badge.cancelled{background:#ef4444;}
+.status-badge.no-show{background:#9ca3af;}
+
+@media (max-width:720px){
+    .appointment-layout{grid-template-columns:1fr}
+    .calendar-container{padding:.75rem}
+    .calendar-container .fc .fc-button{padding:.35rem .5rem;border-radius:8px}
+    .calendar-container .fc .fc-toolbar{gap:.35rem !important}
+    .calendar-container .fc .fc-toolbar-title{font-size:1.15rem}
+}
+@media (max-width:480px){
+    .calendar-container .fc .fc-toolbar { gap:.35rem !important; }
+    .calendar-container .fc .fc-toolbar-title { font-size:1.1rem; }
+}
