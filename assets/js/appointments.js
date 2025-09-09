@@ -1,26 +1,37 @@
 // assets/js/appointments.js
 document.addEventListener('DOMContentLoaded', () => {
-    // ---------- BASE detection ----------
+    // ---------- BASE detection (robust for live + localhost) ----------
     const BASE = (() => {
+        // Prefer server-provided base
         if (window.App && typeof window.App.BASE_URL === 'string') {
-            return window.App.BASE_URL;
+            const b = window.App.BASE_URL.trim();
+            return b.endsWith('/') ? b : b + '/';
         }
-        console.warn('PHP App.BASE_URL not detected. Guessing from URL path.');
-        const pathParts = location.pathname.split('/').filter(Boolean);
-        return pathParts.length > 1 ? `/${pathParts[0]}/` : '/';
-    })();
-    const CB = () => 'cb=' + Date.now();
+        const host  = location.hostname;
+        const parts = location.pathname.split('/').filter(Boolean);
 
-    // ===== START OF FIX: Ibinalik sa "pretty" URL (walang .php) =====
+        // On live, routes like /dashboard/... should resolve API at site root
+        if (parts[0] && /^(dashboard|admin|assets)$/i.test(parts[0])) return '/';
+
+        // On localhost, app may live in a subfolder (e.g., /mc-paw-pals-veterinary-clinic/)
+        if (host === 'localhost' || host === '127.0.0.1') {
+            const known = parts.find(p => /mc-paw-pals-veterinary-clinic/i.test(p));
+            if (known) return `/${known}/`;
+        }
+        // Default: site root
+        return '/';
+    })();
+    const CB = () => String(Date.now());
+
+    // ---------- API endpoints (explicit .php — no rewrite needed) ----------
     const API = {
-        pets:              `${BASE}api/pets/list?${CB()}`,
-        createAppointment: `${BASE}api/appointments/create`,
-        updateAppointment: `${BASE}api/appointments/update`,
-        deleteAppointment: `${BASE}api/appointments/delete`,
-        listAppointments:  `${BASE}api/appointments/list_mine`,
-        slots:             `${BASE}api/appointments/slots`,
+        pets:              `${BASE}api/pets/list.php`,
+        createAppointment: `${BASE}api/appointments/create.php`,
+        updateAppointment: `${BASE}api/appointments/update.php`,
+        deleteAppointment: `${BASE}api/appointments/delete.php`,
+        listAppointments:  `${BASE}api/appointments/list_mine.php`,
+        slots:             `${BASE}api/appointments/slots.php`,
     };
-    // ===== END OF FIX =====
 
     // ---------- Elements ----------
     const modal       = document.getElementById('bookingModal');
@@ -88,6 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (hiddenPetId?.value) u.searchParams.set('pet_id', hiddenPetId.value);
             if (serviceSel?.value)  u.searchParams.set('service', serviceSel.value);
             if (excludeId)          u.searchParams.set('exclude_id', excludeId);
+            u.searchParams.set('cb', CB()); // bust cache
 
             const prev = timeSelect.value;
             const res  = await fetch(u.toString(), { credentials:'same-origin' });
@@ -196,7 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchPets() {
         try {
-            const res = await fetch(API.pets, { credentials: 'same-origin' });
+            const u = new URL(API.pets, location.origin);
+            u.searchParams.set('cb', CB()); // bust cache
+            const res = await fetch(u.toString(), { credentials: 'same-origin' });
             if (!res.ok) throw new Error('Could not fetch pets.');
             const data = await res.json();
             if (!data.ok) throw new Error(data.error || 'Failed to load pets.');
@@ -234,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (petMenu) petMenu.innerHTML = `<li class="pet-empty error">Could not load pets</li>`;
         }
     }
-    
+
     function renderSideList(element, events, title) {
         if (!element) return;
         if (!events.length) {
@@ -266,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const upcoming = events
             .filter(e => new Date(e.start) >= now && ['Pending','Confirmed'].includes(e.extendedProps?.status))
             .sort((a,b) => new Date(a.start) - new Date(b.start));
-        
+
         const history = events
             .filter(e => new Date(e.start) < now || ['Completed','Cancelled','No-Show'].includes(e.extendedProps?.status))
             .sort((a,b) => new Date(b.start) - new Date(a.start));
@@ -313,6 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const u = new URL(API.listAppointments, location.origin);
                     u.searchParams.set('start', fetchInfo.startStr);
                     u.searchParams.set('end', fetchInfo.endStr);
+                    u.searchParams.set('cb', CB()); // bust cache
                     const res = await fetch(u.toString(), { credentials: 'same-origin' });
                     if (!res.ok) throw new Error('Failed to load appointments.');
                     const events = await res.json();
@@ -327,7 +342,7 @@ document.addEventListener('DOMContentLoaded', () => {
             eventClick: (info) => {
                 const ep = info.event.extendedProps || {};
                 const isPending = ep.status === 'Pending';
-                
+
                 const photo = ep.pet_photo_url ? `<div class="swal-pet-thumb" style="background-image:url('${ep.pet_photo_url}')"></div>` : `<div class="swal-pet-thumb placeholder"></div>`;
 
                 const actionsHtml = isPending ? `
@@ -401,7 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
         historyEl.toggleAttribute('hidden', !isHidden);
         historyToggle.querySelector('i').classList.toggle('rotated', isHidden);
     });
-    
+
     dateInput && dateInput.addEventListener('change', () => {
         if (dateInput.value) fetchSlotsFor(dateInput.value, editingId);
         else timeSelect.innerHTML = '<option value="">-- Select a date first --</option>';
