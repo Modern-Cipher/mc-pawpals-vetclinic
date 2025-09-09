@@ -1,4 +1,5 @@
 <?php
+die("Router check: OK!"); // <--- IDAGDAG ITONG LINYA
 // index.php (router)
 require_once __DIR__ . '/vendor/autoload.php';
 
