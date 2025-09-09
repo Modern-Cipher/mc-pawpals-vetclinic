@@ -131,6 +131,7 @@ $routes = [
     'api/appointments/slots'             => __DIR__ . '/api/appointments/slots.php',
     
     // User APIs
+    'api/pets/list'                      => __DIR__ . '/api/pets/list.php',
     'api/users/medical-summary'          => __DIR__ . '/api/users/medical-summary.php',
     'api/users/pet-documents'            => __DIR__ . '/api/users/pet_documents.php', // ===== BAGONG ROUTE PARA SA API =====
 
