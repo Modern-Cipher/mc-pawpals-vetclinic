@@ -1,5 +1,22 @@
 <?php
-die("Router check: OK!"); // <--- IDAGDAG ITONG LINYA
+// ===== START DEBUGGING CODE (Temporary) =====
+$reqPath   = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$scriptDir = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
+$path      = trim(str_starts_with($reqPath, $scriptDir) ? substr($reqPath, strlen($scriptDir)) : $reqPath, '/');
+$path      = rtrim($path, '/');
+
+echo "<pre style='font-family: monospace; background: #f4f4f4; padding: 15px; border: 1px solid #ccc;'>";
+echo "<b>Calculated Path for Router:</b>\n" . htmlspecialchars($path) . "\n\n";
+echo "--- SERVER VARIABLES ---\n";
+echo "<b>REQUEST_URI:</b> " . htmlspecialchars($_SERVER['REQUEST_URI']) . "\n";
+echo "<b>SCRIPT_NAME:</b> " . htmlspecialchars($_SERVER['SCRIPT_NAME']) . "\n";
+echo "</pre>";
+die();
+// ===== END DEBUGGING CODE =====
+
+// index.php (router)
+require_once __DIR__ . '/vendor/autoload.php';
+// ... (tuloy ng code mo) ...
 // index.php (router)
 require_once __DIR__ . '/vendor/autoload.php';
 
