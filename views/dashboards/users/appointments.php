@@ -107,7 +107,7 @@ $V = 'v=20250903j'; // cache-bust
     </div>
 </div>
 
-<script>const App = { BASE_URL: '<?= $BASE ?>' };</script>
+<script>const App = { BASE_URL: '/' };</script>
 <script src="<?= $BASE ?>assets/js/dashboard.js?<?= $V ?>"></script>
 <script src="<?= $BASE ?>assets/js/calendar-component.js?<?= $V ?>"></script>
 <script src="<?= $BASE ?>assets/js/appointments.js?<?= $V ?>"></script>
