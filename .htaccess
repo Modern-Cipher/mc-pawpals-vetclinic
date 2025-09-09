@@ -1,11 +1,20 @@
-RewriteEngine On
-RewriteBase /mc-pawpals-veterinary-clinic/
-DirectoryIndex index.php
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    DirectoryIndex index.php
 
-# allow real files/folders (assets/images/vendor libs)
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+    # Huwag i-rewrite ang mga request para sa mga totoong file o folder
+    # (e.g., para sa mga images, CSS, at JS files mo)
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-# everything else to index.php
-RewriteRule ^ index.php [QSA,L]
+    # --- CONDITIONAL RULES ---
+
+    # Kung ang request ay galing sa LOCALHOST (XAMPP)
+    RewriteCond %{HTTP_HOST} ^localhost$
+    RewriteRule . /mc-paw-pals-veterinary-clinic/index.php [L]
+
+    # Kung ang request ay HINDI galing sa localhost (LIVE SERVER)
+    RewriteCond %{HTTP_HOST} !^localhost$
+    RewriteRule . /index.php [L]
+</IfModule>
